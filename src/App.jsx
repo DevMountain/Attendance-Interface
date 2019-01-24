@@ -4,13 +4,13 @@ import axios from 'axios';
 import './App.css';
 
 class App extends Component {
-  check() {
-    console.log('check');
-    axios.get('/api/test');
+  login() {
+    console.log('hi');
+    axios.get('/auth/devmtn');
   }
 
   render() {
-    const redirect = encodeURI('http://localhost:8001/api/auth/callback');
+    const callback = encodeURI('http://localhost:8001/api/auth/callback');
     return (
       <div className="App">
         <header className="App-header">
@@ -18,10 +18,7 @@ class App extends Component {
           <p>
             Edit <code>src/App.js</code> and save to reload.
           </p>
-          <a className="App-link" href={`https://sso.devmountain.com/dashboard?redirect=${redirect}`}>
-            Login
-          </a>
-          <button onClick={() => this.check()}>Heyo</button>
+          <a href={`http://localhost:8080?redirect=${callback}`}>Heyo</a>
         </header>
       </div>
     );
