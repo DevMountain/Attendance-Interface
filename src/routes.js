@@ -3,6 +3,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRouteStaff from './PrivateRouteStaff';
+import PrivateRouteStudent from './PrivateRouteStudent';
 
 export default class routes extends Component {
   render() {
@@ -11,6 +12,7 @@ export default class routes extends Component {
         <Switch>
           <Route exact path="/" component={Login} />
           <PrivateRouteStaff path="/dashboard" component={Dashboard} />
+          <PrivateRouteStudent path="/student" component={Dashboard} />
         </Switch>
       </Router>
     );

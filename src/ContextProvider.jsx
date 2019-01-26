@@ -8,8 +8,8 @@ export default class ContextProvider extends Component {
     role: ''
   }
 
-  setData = (data) => {
-    this.setState(data)
+  setData = (data, cb = () => { }) => {
+    this.setState(data, cb)
   }
 
   render() {

@@ -9,12 +9,13 @@ class App extends Component {
   componentDidMount = async () => {
     try {
       let { data } = await axios.get('/api/auth/login');
-      this.props.context.actions.setData(data)
-      if (data.role === 'staff') {
-        this.props.history.push(`/dashboard/${data.cohortId}`)
-      } else if (data.role === 'student') {
-        this.props.history.push(`/student`)
-      }
+      this.props.context.actions.setData(data, () => {
+        if (data.role === 'staff') {
+          this.props.history.push(`/dashboard/${data.cohortId}`)
+        } else if (data.role === 'student') {
+          this.props.history.push(`/student`)
+        }
+      })
     }
     catch (err) {
       this.handleUnauthorized(err)

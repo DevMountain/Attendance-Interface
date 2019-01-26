@@ -26,9 +26,14 @@ massive({
   password: DB_PASS,
   database: DB_NAME,
   user: DB_USER,
-}).then(db => {
-  app.set('db', db);
-});
+})
+  .then(db => {
+    app.set('db', db);
+  })
+  .catch(err => {
+    console.log('Error conncting to the DB. This may be caused by not being at a DM location');
+    console.log(err);
+  });
 
 app.get('/api/auth/callback', authCtrl.callback);
 app.get('/api/auth/login', authCtrl.login);
