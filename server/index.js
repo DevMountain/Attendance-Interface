@@ -5,6 +5,7 @@ const massive = require('massive');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const authCtrl = require('./controllers/auth');
+const attCtrl = require('./controllers/attendance')
 
 const { SERVER_PORT, SECRET, DB_HOST, DB_PASS, DB_USER, DB_NAME } = process.env;
 
@@ -38,11 +39,12 @@ massive({
 app.get('/api/auth/callback', authCtrl.callback);
 app.get('/api/auth/login', authCtrl.login);
 
-app.use(authCtrl.isStudent);
-// All endpoints a student can access
+// app.use(authCtrl.isStudent);
+// // All endpoints a student can access
 
-app.use(authCtrl.isStaff);
-// All endpoints staff can access
+// app.use(authCtrl.isStaff);
+
+app.get('/api/getStudent/:id', attCtrl.getStudent)
 
 app.listen(SERVER_PORT, () => {
   console.log(`${SERVER_PORT} Duck sized horses marching`);
