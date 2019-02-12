@@ -43,7 +43,7 @@ app.get('/api/auth/login', authCtrl.login);
 // // All endpoints a student can access
 
 // app.use(authCtrl.isStaff);
-
+app.get('/api/getAllCohorts', attCtrl.getAllCohorts)
 app.get('/api/getStudent/:id', attCtrl.getStudent)
 
 app.listen(SERVER_PORT, () => {

@@ -7,5 +7,13 @@ module.exports = {
         })
 
 
+    },
+    getAllCohorts: async (req, res) => {
+        const db = req.app.get('db')
+
+        const cohorts = await db.get_all_cohorts()
+            
+        res.status(200).send(cohorts)
+        
     }
 }
