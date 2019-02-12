@@ -8,7 +8,7 @@ import CohortView from './CohortView'
 
 export default class Dashboard extends Component {
   state = {
-    selectedCohort: "",
+    selectedCohort: "WPR39",
     cohortList: [],
     // currentDate: moment().format('MM-DD-YYYY'),
     currentDate: "8/31/18",

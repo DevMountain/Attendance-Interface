@@ -9,7 +9,7 @@ import axios from 'axios'
 class Nav extends Component {
   state = { 
     cohorts: [],
-    selectedCohort: '',
+    selectedCohort: 'WPR39',
     location: '' 
   }
   componentDidMount(){
@@ -37,7 +37,7 @@ class Nav extends Component {
           <div className="menu-container">
             {this.props.match.path === "/dashboard" ? (
               <div className="select-container">
-                <h2>Attendance for WPR45</h2>
+                <h2>Attendance for {selectedCohort}</h2>
                 <CohortSelector 
                   cohorts={cohorts} 
                   selectedCohort={selectedCohort} 
