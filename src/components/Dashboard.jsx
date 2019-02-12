@@ -89,6 +89,7 @@ export default class Dashboard extends Component {
             {cohortDataTable}
           </table>
         </Nav>
+        
       </>
     );
   }
