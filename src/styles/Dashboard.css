@@ -1,0 +1,26 @@
+.table-data{
+    width: 25%;
+    text-align: center;
+    padding: 0;
+}
+
+
+.cohort-table {
+    margin-top: 0;
+}
+
+.student-link {
+    color: white;
+}
+
+.student-link:hover {
+    color: #2aabe2;
+    text-decoration: none;
+}
+
+.student-link > span {
+    padding-bottom: .1rem;
+    border-bottom: 1px solid #2aabe2
+}
+
+

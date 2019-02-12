@@ -33,7 +33,7 @@ class Student extends Component {
           <tr key={student.user_id}>
             <td>{formattedDate}</td>
             {student.first_ping === null ? (
-              <td style={{ textAlign: "center" }}>
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 No Data Available For This Day
               </td>
             ) : (
@@ -44,7 +44,7 @@ class Student extends Component {
             )}
 
             {student.last_ping === null ? (
-              <td style={{ textAlign: "center" }}>
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 No Data Available For This Day
               </td>
             ) : (
@@ -60,7 +60,12 @@ class Student extends Component {
     return (
       <>
         <Nav>
-          <h1 className="attendance-header">{`Attendance For ${first_name} ${last_name}`}</h1>
+          <h1 className="attendance-header">
+            Attendance For{" "}
+            <span style={{ color: "#2aabe2" }}>
+              {first_name} {last_name}
+            </span>
+          </h1>
 
           <table>
             <tr>
