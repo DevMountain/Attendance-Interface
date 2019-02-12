@@ -29,7 +29,7 @@ module.exports = {
         // If cookie valid
         if (!err) {
           req.session.user = user;
-          let { roles } = req.session.user;
+          let { roles }  = req.session.user;
           roles = roles.map(role => role.role);
           // todo: ask about other potential roles
           // Check if user is just student

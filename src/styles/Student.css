@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,300i,400,400i,700');
+
+* {
+    font-family: 'Nunito', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.attendance-header {
+    text-align: center;
+    color: white;
+    margin-top: 1rem;
+    font-size: 2rem;
+}
+
+
+table,
+th,
+td {
+    border: 1px solid #212121;
+    color: white
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    margin-top: 1rem
+}
+
+th {
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+th>span {
+    padding-bottom: .3rem;
+    border-bottom: 1px solid #2aabe2
+}
+
+td {
+    padding-left: 1rem;
+    position: relative;
+}
+
+
+tr:nth-child(odd) {
+    background-color: #181818
+}
+
+
+
+.edit {
+    position: absolute;
+    right: 0;
+    padding-right: 1rem;
+    cursor: pointer;
+}
+
+.edit:hover {
+    color: #2aabe2
+}
