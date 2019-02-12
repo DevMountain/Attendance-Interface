@@ -10,7 +10,9 @@ class Student extends Component {
 
   componentDidMount() {
     axios.get(`/api/getStudent/${9771}`).then(res => {
-      console.log(res.data);
+      this.setState({
+        studentInfo: res.data
+      })
     });
   }
   render() {
