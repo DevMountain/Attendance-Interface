@@ -3,9 +3,28 @@ import "./../styles/Nav.css";
 import { withRouter } from "react-router-dom";
 import DevMtnLogo from "./../assets/MarkBlue@2x.png";
 import { Link } from "react-router-dom";
+import CohortSelector from './CohortSelector'
+import axios from 'axios'
 
 class Nav extends Component {
+  state = { 
+    cohorts: [],
+    selectedCohort: '',
+    location: '' 
+  }
+  componentDidMount(){
+    axios.get('/api/getAllCohorts').then(res => {
+        this.setState({cohorts: res.data})
+    })
+  }
+  updateSelectedCohort = () => (e) => {
+    this.setState({selectedCohort: e.target.value})
+  }
+  updateLocation = () => (e) => {
+    this.setState({location: e.target.value})
+  }
   render() {
+    const {cohorts, selectedCohort, location} = this.state
     return (
       <>
         <div className="nav-main">
@@ -19,9 +38,13 @@ class Nav extends Component {
             {this.props.match.path === "/dashboard" ? (
               <div className="select-container">
                 <h2>Attendance for WPR45</h2>
-                <select className="cohort-select" name="CohortSelect">
-                  <option value="0">WPR45</option>
-                </select>
+                <CohortSelector 
+                  cohorts={cohorts} 
+                  selectedCohort={selectedCohort} 
+                  location={location} 
+                  updateLocation={this.updateLocation} 
+                  updateSelectedCohort={this.updateSelectedCohort}
+                />
               </div>
             ) : (
               <h2>
@@ -46,7 +69,17 @@ class Nav extends Component {
               </span>
             </h3>
           </div>
-          <div className="attendance-container">{this.props.children}</div>
+          <div className="attendance-container">
+          {this.props.render ? 
+          (
+            this.props.render(selectedCohort)
+          )
+          :
+          (
+            this.props.children
+          )
+          }
+          </div>
         </div>
       </>
     );
