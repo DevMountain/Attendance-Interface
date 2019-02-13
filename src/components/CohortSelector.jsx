@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './../styles/CohortSelector.css'
+import React from 'react';
+
 const CohortSelector =(props) => {
   
         const {cohorts, selectedCohort, location, updateLocation, updateSelectedCohort} = props

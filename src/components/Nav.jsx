@@ -11,13 +11,19 @@ import moment from 'moment'
 class Nav extends Component {
   state = {
     cohorts: [],
-    selectedCohort: "WPR39",
-    location: ""
-  };
-  componentDidMount() {
-    axios.get("/api/getAllCohorts").then(res => {
-      this.setState({ cohorts: res.data });
-    });
+    selectedCohort: 'WPR39',
+    location: '' 
+  }
+  componentDidMount(){
+    axios.get('/api/getAllCohorts').then(res => {
+        this.setState({cohorts: res.data})
+    })
+  }
+  updateSelectedCohort = () => (e) => {
+    this.setState({selectedCohort: e.target.value})
+  }
+  updateLocation = () => (e) => {
+    this.setState({location: e.target.value})
   }
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
@@ -40,12 +46,12 @@ class Nav extends Component {
           <div className="menu-container">
             {this.props.match.path === "/dashboard" ? (
               <div className="select-container">
-                <h2>Attendance for WPR45</h2>
-                <CohortSelector
-                  cohorts={cohorts}
-                  selectedCohort={selectedCohort}
-                  location={location}
-                  updateLocation={this.updateLocation}
+                <h2>Attendance for {selectedCohort}</h2>
+                <CohortSelector 
+                  cohorts={cohorts} 
+                  selectedCohort={selectedCohort} 
+                  location={location} 
+                  updateLocation={this.updateLocation} 
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
            
