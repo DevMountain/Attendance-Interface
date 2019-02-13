@@ -7,7 +7,12 @@ import { withRouter } from "react-router-dom";
 
 class Student extends Component {
   state = {
-    studentInfo: [{ first_name: "", last_name: "" }]
+    studentInfo: [
+      {
+        first_name: "",
+        last_name: ""
+      }
+    ]
   };
 
   componentDidMount() {
@@ -38,7 +43,15 @@ class Student extends Component {
               </td>
             ) : (
               <td>
-                {firstPing}
+                <span
+                  className={
+                    moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
+                      ? "first-ping-green"
+                      : "first-ping-red"
+                  }
+                >
+                  {firstPing}
+                </span>
                 <i class="edit far fa-edit" />
               </td>
             )}
@@ -49,7 +62,17 @@ class Student extends Component {
               </td>
             ) : (
               <td>
-                {lastPing}
+                <span
+                  className={
+                    moment(lastPing, "h:mm A").isAfter(
+                      moment("5:00 PM", "h:mm A")
+                    )
+                      ? "first-ping-green"
+                      : "first-ping-red"
+                  }
+                >
+                  {lastPing}
+                </span>
                 <i class="edit far fa-edit" />
               </td>
             )}
@@ -70,7 +93,8 @@ class Student extends Component {
           <table>
             <tr>
               <th>
-                <span>Date</span>
+                <span>Date</span><br/>
+
               </th>
               <th>
                 <span>Time In</span>

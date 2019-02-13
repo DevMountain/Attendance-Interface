@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './../styles/CohortSelector.css'
 const CohortSelector =(props) => {
   
         const {cohorts, selectedCohort, location, updateLocation, updateSelectedCohort} = props
@@ -11,15 +11,15 @@ const CohortSelector =(props) => {
             return <option key={cohort.cohort} value={cohort.cohort}>{cohort.cohort}</option>
         })
         return ( 
-            <div>
-                <select value={location} onChange={updateLocation()}>
+            <div className='select-inner-container'>
+                <select className='location-select' value={location} onChange={updateLocation()}>
                     <option default value=''>All Locations</option>
                     <option value='Dallas'>Dallas</option>
                     <option value='Lehi'>Lehi</option>
                     <option value='PHX'>Pheonix</option>
                     <option value='Provo'>Provo</option>
                 </select>
-                <select value={selectedCohort} onChange={updateSelectedCohort()}>
+                <select className='cohort-select'value={selectedCohort} onChange={updateSelectedCohort()}>
                     <option value=''>Choose a Cohort</option>
                     {cohortSelectors}
                 </select>

@@ -4,7 +4,7 @@ import Nav from "./Nav";
 import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import CohortView from './CohortView'
+import CohortView from "./CohortView";
 
 export default class Dashboard extends Component {
   state = {
@@ -29,10 +29,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <>
-        <Nav render={(cohort) => <CohortView cohort={cohort} />} />
-          
-        
-        
+        <Nav render={cohort => <CohortView cohort={cohort} />} />
       </>
     );
   }

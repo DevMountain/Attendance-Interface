@@ -1,0 +1,12 @@
+.location-select, .cohort-select {
+    height: 1.5rem;
+}
+
+
+.location-select {
+    margin-left: 1rem
+}
+
+.select-inner-container {
+    display: flex;
+}
