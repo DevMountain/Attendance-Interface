@@ -4,4 +4,3 @@ join "user" on "user".id = enrollment.user_id
 join automated_attendance aa on "user".id = aa.user_id
 join location on classsession.location_id = location.id
 where enrollment.user_id = $1
-

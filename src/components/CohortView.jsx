@@ -4,34 +4,55 @@ import Nav from "./Nav";
 import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
 
-export default class CohortView extends Component {
+
+const styles = theme => ({
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: '5rem',
+    marginRight: '5rem',
+    width: 150,
+  }
+});
+
+
+ class CohortView extends Component {
   state = {
     cohort: this.props.cohort,
     // currentDate: moment().format('MM-DD-YYYY'),
-    currentDate: "8/31/18",
+    currentDate: "8/30/18",
     cohortData: []
   };
 
   componentDidMount() {
-    this.getCohortData()
+    this.getCohortData();
   }
-  componentDidUpdate(prevProps){
-      if(prevProps.cohort !== this.props.cohort) this.getCohortData()
+  componentDidUpdate(prevProps) {
+    if (prevProps.cohort !== this.props.cohort) this.getCohortData();
   }
   getCohortData = () => {
-      console.log(this.props.cohort)
+    console.log(this.props.cohort);
     axios
-    .post("/api/getCohort", { date: this.state.currentDate, cohort: this.props.cohort })
-    .then(res => {
-      console.log(res);
-      this.setState({
-        cohortData: res.data
+      .post("/api/getCohort", {
+        date: this.state.currentDate,
+        cohort: this.props.cohort
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          cohortData: res.data
+        });
       });
-    });
-  }
+  };
   render() {
-      console.log(this.props.cohort)
+    const { classes } = this.props;
+
+    let currentDate = moment().format('YYYY-MM-DD')
     const cohortDataTable = this.state.cohortData.map((cohort, index) => {
       let date = moment(cohort.date);
       let formattedDate = `${date.format("dddd")}, ${date.format(
@@ -39,61 +60,95 @@ export default class CohortView extends Component {
       )}`;
       let firstPing = moment(cohort.first_ping, "HH:mm:ss").format("h:mm A");
       let lastPing = moment(cohort.last_ping, "HH:mm:ss").format("h:mm A");
+      let test = moment(firstPing, "h:mm A").isBefore(moment("9:05", "h:mm"));
       return (
         <>
           <tr className="table-rows">
-            <td className="table-data">
+            <td className="table-data-name">
               <Link className="student-link" to={`/student/${cohort.user_id}`}>
-                <span>{cohort.first_name} {cohort.last_name}</span>
+                <span>
+                  {cohort.first_name} {cohort.last_name}
+                </span>
               </Link>
             </td>
 
-            <td className="table-data">{formattedDate}</td>
             {cohort.first_ping === null ? (
               <td
-                className="table-data"
-                style={{ color: "#2aabe2", textAlign: "center" }}
+              style={{ color: "#2aabe2", textAlign: "center" }}
               >
                 Student Has Not Yet Arrived
               </td>
             ) : (
-              <td className="table-data">{firstPing}</td>
+              <td
+              className={
+                moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
+                ? "first-ping-green"
+                : "first-ping-red"
+              }
+              >
+                {firstPing}
+              </td>
             )}
 
             {cohort.last_ping === null ? (
               <td
-                className="table-data"
                 style={{ color: "#2aabe2", textAlign: "center" }}
-              >
+                >
                 Student Has Not Yet Left
               </td>
             ) : (
-              <td className="table-data">{lastPing}</td>
+              <td
+              className={
+                moment(lastPing, "h:mm A").isAfter(
+                  moment("5:00 PM", "h:mm A")
+                  )
+                  ? "first-ping-green"
+                  : "first-ping-red"
+                }
+                >
+                {lastPing}
+              </td>
             )}
+            <td className="table-data-comments">lalaskdjf;alskdjf</td>
           </tr>
         </>
       );
     });
     return (
       <>
-          <table className="cohort-table">
-            <tr className="table-rows">
-              <th className='table-header'>
-                <span>Name</span>
-              </th>
-              <th>
-                <span>Date</span>
-              </th>
-              <th>
-                <span>Time In</span>
-              </th>
-              <th>
-                <span>Time Out</span>
-              </th>
-            </tr>
-            {cohortDataTable}
-          </table>
+        <table className="cohort-table">
+          <tr className="table-rows">
+            <th className="table-header">
+              <span>Name</span>
+            </th>
+            <th>
+              <span>Time In</span>
+            </th>
+            <th>
+              <span>Time Out</span>
+            </th>
+            <th>
+              <span>Comments</span>
+            </th>
+          </tr>
+          {cohortDataTable}
+        </table>
       </>
     );
   }
 }
+export default withStyles(styles)(CohortView)
+
+
+
+// <form className={classes.container} noValidate>
+// <TextField
+//   id="date"
+//   type="date"
+//   defaultValue={currentDate}
+//   className={classes.textField}
+//   InputProps={{
+//     disableUnderline: true
+//   }}
+// />
+// </form>

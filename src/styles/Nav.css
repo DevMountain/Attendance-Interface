@@ -104,8 +104,8 @@
 
 .select-container {
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between
 }
 
 .menu-container {
@@ -115,5 +115,17 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+
+#date {
+    color: #2aabe2
+}
+
+.date-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }

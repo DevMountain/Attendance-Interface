@@ -29,7 +29,7 @@ table {
 }
 
 tr {
-    height: 10vh;
+    height: 8vh;
 }
 
 th {
@@ -45,7 +45,6 @@ th>span {
 td {
     padding-left: 1rem;
     position: relative;
-    width: 33.33%;
 
 }
 

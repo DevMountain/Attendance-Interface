@@ -3,11 +3,13 @@ import "./../styles/Nav.css";
 import { withRouter } from "react-router-dom";
 import DevMtnLogo from "./../assets/MarkBlue@2x.png";
 import { Link } from "react-router-dom";
-import CohortSelector from './CohortSelector'
-import axios from 'axios'
+import CohortSelector from "./CohortSelector";
+import axios from "axios";
+import moment from 'moment'
+
 
 class Nav extends Component {
-  state = { 
+  state = {
     cohorts: [],
     selectedCohort: 'WPR39',
     location: '' 
@@ -23,8 +25,15 @@ class Nav extends Component {
   updateLocation = () => (e) => {
     this.setState({location: e.target.value})
   }
+  updateSelectedCohort = () => e => {
+    this.setState({ selectedCohort: e.target.value });
+  };
+  updateLocation = () => e => {
+    this.setState({ location: e.target.value });
+  };
   render() {
-    const {cohorts, selectedCohort, location} = this.state
+    const { classes } = this.props;
+    const { cohorts, selectedCohort, location } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -45,6 +54,7 @@ class Nav extends Component {
                   updateLocation={this.updateLocation} 
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
+           
               </div>
             ) : (
               <h2>
@@ -70,15 +80,9 @@ class Nav extends Component {
             </h3>
           </div>
           <div className="attendance-container">
-          {this.props.render ? 
-          (
-            this.props.render(selectedCohort)
-          )
-          :
-          (
-            this.props.children
-          )
-          }
+            {this.props.render
+              ? this.props.render(selectedCohort)
+              : this.props.children}
           </div>
         </div>
       </>
@@ -86,4 +90,4 @@ class Nav extends Component {
   }
 }
 
-export default withRouter(Nav);
+export default withRouter(Nav)

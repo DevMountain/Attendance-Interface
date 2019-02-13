@@ -37,6 +37,7 @@ massive({
   })
   .then(db => {
     app.set('db', db);
+    console.log('connected to db')
   })
   .catch(err => {
     console.log('Error conncting to the DB. This may be caused by not being at a DM location');
