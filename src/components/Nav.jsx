@@ -5,13 +5,43 @@ import DevMtnLogo from "./../assets/MarkBlue@2x.png";
 import { Link } from "react-router-dom";
 import CohortSelector from "./CohortSelector";
 import axios from "axios";
+<<<<<<< HEAD
 import moment from "moment";
 import InfiniteCalendar from "react-infinite-calendar";
 import "react-infinite-calendar/styles.css";
+=======
+import moment from 'moment'
+import InfiniteCalendar from 'react-infinite-calendar';
+import 'react-infinite-calendar/styles.css';
+
+
+
+
+
+
+
+
+// const styles = theme => ({
+//   container: {
+//     display: "flex",
+//     flexWrap: "wrap"
+//   },
+//   textField: {
+//     marginLeft: '5rem',
+//     marginRight: '5rem',
+//     width: 150,
+//   },
+//   grid: {
+//     width: '60%',
+//   }
+// });
+
+>>>>>>> master
 
 class Nav extends Component {
   state = {
     cohorts: [],
+<<<<<<< HEAD
     selectedCohort: "WPR39",
     location: "",
     selectedDate: moment().format("YYYY-MM-DD")
@@ -20,6 +50,23 @@ class Nav extends Component {
     axios.get("/api/getAllCohorts").then(res => {
       this.setState({ cohorts: res.data });
     });
+=======
+    selectedCohort: 'WPR39',
+    location: '',
+    selectedDate:moment().format('YYYY-MM-DD'),
+    dateModal: false
+  }
+  componentDidMount(){
+    axios.get('/api/getAllCohorts').then(res => {
+        this.setState({cohorts: res.data})
+    })
+  }
+  updateSelectedCohort = () => (e) => {
+    this.setState({selectedCohort: e.target.value})
+  }
+  updateLocation = () => (e) => {
+    this.setState({location: e.target.value})
+>>>>>>> master
   }
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
@@ -27,6 +74,7 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
+<<<<<<< HEAD
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
   };
@@ -35,10 +83,20 @@ class Nav extends Component {
   };
   updateSelectedDate = () => date => {
     this.setState({ selectedDate: date });
+=======
+  updateSelectedDate = (date) => {
+    date = date.toLocaleDateString("en-US") //turns Date object into string
+
+    this.setState({ selectedDate: date, dateModal: false });
+    
+>>>>>>> master
   };
+  onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
   render() {
     const { classes } = this.props;
-    const { cohorts, selectedCohort, location, selectedDate } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate, dateModal } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -61,9 +119,13 @@ class Nav extends Component {
                   updateLocation={this.updateLocation}
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
+<<<<<<< HEAD
                 <div >
            
                 </div>
+=======
+                <button onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
+>>>>>>> master
               </div>
             ) : (
               <h2>
@@ -93,10 +155,29 @@ class Nav extends Component {
               ? this.props.render(selectedCohort, selectedDate)
               : this.props.children}
           </div>
+          { dateModal &&
+            <div className="modal-date-picker" onClick={() => this.setState({dateModal: false})}>
+                <div onClick={(e) => e.stopPropagation()} >
+                <InfiniteCalendar
+                  width={600}
+                  height={400}
+                  selected={selectedDate}
+                  onSelect={(e) => this.updateSelectedDate(e)}
+                  />
+                </div>
+            </div>
+            
+
+           }
+
         </div>
       </>
     );
   }
 }
 
+<<<<<<< HEAD
 export default withRouter(Nav);
+=======
+export default withRouter(Nav)
+>>>>>>> master
