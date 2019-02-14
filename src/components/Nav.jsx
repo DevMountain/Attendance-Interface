@@ -32,7 +32,6 @@ class Nav extends Component {
     this.setState({ location: e.target.value });
   };
   render() {
-    const { classes } = this.props;
     const { cohorts, selectedCohort, location } = this.state;
     return (
       <>
