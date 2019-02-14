@@ -5,4 +5,4 @@ join automated_attendance aa on "user".id = aa.user_id
 join location on classsession.location_id = location.id
 where classsession.short_name = $1 and date = $2
 
-order by date desc
+order by first_ping desc

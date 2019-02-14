@@ -4,8 +4,7 @@ import Nav from "./Nav";
 import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
+
 
 
 const styles = theme => ({
@@ -25,8 +24,9 @@ const styles = theme => ({
   state = {
     cohort: this.props.cohort,
     // currentDate: moment().format('MM-DD-YYYY'),
-    currentDate: "8/30/18",
-    cohortData: []
+    currentDate: moment(this.props.date, 'YYYY-MM-DD').format('MM-DD-YYYY'),
+    cohortData: [],
+    sortBy: 'time in desc'
   };
 
   componentDidMount() {
@@ -34,12 +34,15 @@ const styles = theme => ({
   }
   componentDidUpdate(prevProps) {
     if (prevProps.cohort !== this.props.cohort) this.getCohortData();
+    if (prevProps.date !== this.props.date) this.getCohortData();
+
+    
   }
   getCohortData = () => {
     console.log(this.props.cohort);
     axios
       .post("/api/getCohort", {
-        date: this.state.currentDate,
+        date: this.props.date,
         cohort: this.props.cohort
       })
       .then(res => {
@@ -49,11 +52,66 @@ const styles = theme => ({
         });
       });
   };
+
+  handleSortBy = (sortBy) => {
+    this.setState({sortBy})
+  }
   render() {
-    const { classes } = this.props;
+    const { classes, date } = this.props;
+    const { cohortData, sortBy } = this.state
+    console.log(date,cohortData)
+    let sortedCohortData = cohortData.slice()
+    if(sortBy === 'time in asc'){
+     sortedCohortData.sort((a, b) => {
+        if(moment(a.first_ping, 'h:mm A').isBefore(moment(b.first_ping, 'h:mm A'))){
+          return -1
+          console.log(b - a)
+        }else{
+          return 1
+        }
+      })
+    }else if(sortBy === 'time in desc'){
+      sortedCohortData = cohortData.slice()
+    }else if(sortBy === 'name asc'){
+      sortedCohortData.sort((a, b) => {
+        if( b.last_name.toLowerCase() < a.last_name.toLowerCase() ){
+          return 1
+        }else {
+          return -1
+        }
+      })
+    }else if(sortBy === 'name desc'){
+      sortedCohortData.sort((a, b) => {
+        if( b.last_name.toLowerCase() > a.last_name.toLowerCase() ){
+          return 1
+        }else {
+          return -1
+        }
+      })
+    }else if(sortBy === 'time out asc'){
+      sortedCohortData.sort((a, b) => {
+        if(moment(a.last_ping, 'h:mm A').isBefore(moment(b.last_ping, 'h:mm A'))){
+          return -1
+        }else{
+          return 1
+        }
+      })
+    }else if(sortBy === 'time out desc'){
+      sortedCohortData.sort((a, b) => {
+        if(moment(a.last_ping, 'h:mm A').isBefore(moment(b.last_ping, 'h:mm A'))){
+          return 1
+        }else{
+          return -1
+        }
+      })
+    }
+
+
+
+
 
     let currentDate = moment().format('YYYY-MM-DD')
-    const cohortDataTable = this.state.cohortData.map((cohort, index) => {
+    const cohortDataTable = sortedCohortData.map((cohort, index) => {
       let date = moment(cohort.date);
       let formattedDate = `${date.format("dddd")}, ${date.format(
         "MM-DD-YYYY"
@@ -94,7 +152,7 @@ const styles = theme => ({
               <td
                 style={{ color: "#2aabe2", textAlign: "center" }}
                 >
-                Student Has Not Yet Left
+                Student Has Not Yet Arrived
               </td>
             ) : (
               <td
@@ -119,13 +177,40 @@ const styles = theme => ({
         <table className="cohort-table">
           <tr className="table-rows">
             <th className="table-header">
-              <span>Name</span>
+              
+              {sortBy === 'name asc' ?
+              (
+                <><span onClick={() => this.handleSortBy('name desc')}>Name </span><i class="fas fa-angle-up"></i></>
+              )
+              :
+              sortBy === 'name desc' ? 
+              (
+                <><span onClick={() => this.handleSortBy('name asc')}>Name </span><i class="fas fa-angle-down"></i></>
+              )
+              :
+                <span onClick={() => this.handleSortBy('name asc')}>Name </span>
+              }
+
             </th>
             <th>
-              <span>Time In</span>
+            {sortBy === 'time in asc' ?
+                <><span onClick={() => this.handleSortBy('time in desc')}>Time In </span><i class="fas fa-angle-up"></i></>
+              :
+              sortBy === 'time in desc' ?
+                <><span onClick={() => this.handleSortBy('time in asc')}>Time In </span><i class="fas fa-angle-down"></i></>
+              :
+                <span onClick={() => this.handleSortBy('time in desc')}>Time In </span>
+            }
             </th>
             <th>
-              <span>Time Out</span>
+            {sortBy === 'time out asc' ?
+                <><span onClick={() => this.handleSortBy('time out desc')}>Time Out </span><i class="fas fa-angle-up"></i></>
+              :
+              sortBy === 'time out desc' ?
+                <><span onClick={() => this.handleSortBy('time out asc')}>Time Out </span><i class="fas fa-angle-down"></i></>
+              :
+                <span onClick={() => this.handleSortBy('time out desc')}>Time Out </span>
+            }
             </th>
             <th>
               <span>Comments</span>
@@ -137,18 +222,7 @@ const styles = theme => ({
     );
   }
 }
-export default withStyles(styles)(CohortView)
+export default (CohortView)
 
 
 
-// <form className={classes.container} noValidate>
-// <TextField
-//   id="date"
-//   type="date"
-//   defaultValue={currentDate}
-//   className={classes.textField}
-//   InputProps={{
-//     disableUnderline: true
-//   }}
-// />
-// </form>
