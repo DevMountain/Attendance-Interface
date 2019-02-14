@@ -5,40 +5,21 @@ import DevMtnLogo from "./../assets/MarkBlue@2x.png";
 import { Link } from "react-router-dom";
 import CohortSelector from "./CohortSelector";
 import axios from "axios";
-import moment from 'moment'
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-
-const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: '5rem',
-    marginRight: '5rem',
-    width: 150,
-  }
-});
-
+import moment from "moment";
+import InfiniteCalendar from "react-infinite-calendar";
+import "react-infinite-calendar/styles.css";
 
 class Nav extends Component {
   state = {
     cohorts: [],
-    selectedCohort: 'WPR39',
-    location: '',
-    selectedDate:moment().format('YYYY-MM-DD') 
-  }
-  componentDidMount(){
-    axios.get('/api/getAllCohorts').then(res => {
-        this.setState({cohorts: res.data})
-    })
-  }
-  updateSelectedCohort = () => (e) => {
-    this.setState({selectedCohort: e.target.value})
-  }
-  updateLocation = () => (e) => {
-    this.setState({location: e.target.value})
+    selectedCohort: "WPR39",
+    location: "",
+    selectedDate: moment().format("YYYY-MM-DD")
+  };
+  componentDidMount() {
+    axios.get("/api/getAllCohorts").then(res => {
+      this.setState({ cohorts: res.data });
+    });
   }
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
@@ -46,8 +27,14 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
-  updateSelectedDate = () => e => {
-    this.setState({ selectedDate: e.target.value });
+  updateSelectedCohort = () => e => {
+    this.setState({ selectedCohort: e.target.value });
+  };
+  updateLocation = () => e => {
+    this.setState({ location: e.target.value });
+  };
+  updateSelectedDate = () => date => {
+    this.setState({ selectedDate: date });
   };
   render() {
     const { classes } = this.props;
@@ -64,27 +51,19 @@ class Nav extends Component {
           <div className="menu-container">
             {this.props.match.path === "/dashboard" ? (
               <div className="select-container">
-                <h2>Attendance for {selectedCohort}</h2>
-                <CohortSelector 
-                  cohorts={cohorts} 
-                  selectedCohort={selectedCohort} 
-                  location={location} 
-                  updateLocation={this.updateLocation} 
+                <h2 style={{ textAlign: "center", fontSize: "1.8rem" }}>
+                  {selectedCohort} Attendance
+                </h2>
+                <CohortSelector
+                  cohorts={cohorts}
+                  selectedCohort={selectedCohort}
+                  location={location}
+                  updateLocation={this.updateLocation}
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
-                <form className={classes.container} noValidate>
-                  <TextField
-                    id="date"
-                    type="date"
-                    defaultValue={selectedDate}
-                    onChange={this.updateSelectedDate()}
-                    className={classes.textField}
-                    InputProps={{
-                      disableUnderline: true
-                    }}
-                  />
-                </form>
+                <div >
            
+                </div>
               </div>
             ) : (
               <h2>
@@ -120,4 +99,4 @@ class Nav extends Component {
   }
 }
 
-export default withStyles(styles)(withRouter(Nav))
+export default withRouter(Nav);
