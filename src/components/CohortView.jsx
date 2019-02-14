@@ -70,7 +70,7 @@ const styles = theme => ({
           return 1
         }
       })
-      
+
     }else if(sortBy === 'time in desc'){
       sortedCohortData = cohortData.slice()
     }else if(sortBy === 'name asc'){
@@ -111,7 +111,8 @@ const styles = theme => ({
 
 
 
-    let currentDate = moment().format('YYYY-MM-DD')
+    let dayOfWeek = moment(date).format('ddd')
+    console.log(dayOfWeek)
     const cohortDataTable = sortedCohortData.map((cohort, index) => {
       let date = moment(cohort.date);
       let formattedDate = `${date.format("dddd")}, ${date.format(
@@ -119,7 +120,14 @@ const styles = theme => ({
       )}`;
       let firstPing = moment(cohort.first_ping, "HH:mm:ss").format("h:mm A");
       let lastPing = moment(cohort.last_ping, "HH:mm:ss").format("h:mm A");
-      let test = moment(firstPing, "h:mm A").isBefore(moment("9:05", "h:mm"));
+      let dayStart = '9:05 AM'
+      let dayEnd = '4:50 PM'
+      if(dayOfWeek === 'Fri'){
+        dayStart = '9:36 AM'
+      }
+
+      let test = moment(firstPing, "h:mm A").isBefore(moment(dayStart, 'h:mm A'));
+      console.log(test)
       return (
         <>
           <tr className="table-rows">
@@ -140,7 +148,7 @@ const styles = theme => ({
             ) : (
               <td
               className={
-                moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
+                moment(firstPing, "h:mm A").isBefore(moment(dayStart, 'h:mm A'))
                 ? "first-ping-green"
                 : "first-ping-red"
               }
@@ -159,7 +167,7 @@ const styles = theme => ({
               <td
               className={
                 moment(lastPing, "h:mm A").isAfter(
-                  moment("5:00 PM", "h:mm A")
+                  moment(dayEnd, 'h:mm A')
                   )
                   ? "first-ping-green"
                   : "first-ping-red"
@@ -181,36 +189,36 @@ const styles = theme => ({
               
               {sortBy === 'name asc' ?
               (
-                <><span onClick={() => this.handleSortBy('name desc')}>Name </span><i class="fas fa-angle-up"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('name desc')}>Name </span><i class="fas fa-angle-up"></i></>
               )
               :
               sortBy === 'name desc' ? 
               (
-                <><span onClick={() => this.handleSortBy('name asc')}>Name </span><i class="fas fa-angle-down"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('name asc')}>Name </span><i class="fas fa-angle-down"></i></>
               )
               :
-                <span onClick={() => this.handleSortBy('name asc')}>Name </span>
+                <span className='column-title' onClick={() => this.handleSortBy('name asc')}>Name </span>
               }
 
             </th>
             <th>
             {sortBy === 'time in asc' ?
-                <><span onClick={() => this.handleSortBy('time in desc')}>Time In </span><i class="fas fa-angle-up"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('time in desc')}>Time In </span><i class="fas fa-angle-up"></i></>
               :
               sortBy === 'time in desc' ?
-                <><span onClick={() => this.handleSortBy('time in asc')}>Time In </span><i class="fas fa-angle-down"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('time in asc')}>Time In </span><i class="fas fa-angle-down"></i></>
               :
-                <span onClick={() => this.handleSortBy('time in desc')}>Time In </span>
+                <span className='column-title' onClick={() => this.handleSortBy('time in desc')}>Time In </span>
             }
             </th>
             <th>
             {sortBy === 'time out asc' ?
-                <><span onClick={() => this.handleSortBy('time out desc')}>Time Out </span><i class="fas fa-angle-up"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('time out desc')}>Time Out </span><i class="fas fa-angle-up"></i></>
               :
               sortBy === 'time out desc' ?
-                <><span onClick={() => this.handleSortBy('time out asc')}>Time Out </span><i class="fas fa-angle-down"></i></>
+                <><span className='column-title' onClick={() => this.handleSortBy('time out asc')}>Time Out </span><i class="fas fa-angle-down"></i></>
               :
-                <span onClick={() => this.handleSortBy('time out desc')}>Time Out </span>
+                <span className='column-title' onClick={() => this.handleSortBy('time out desc')}>Time Out </span>
             }
             </th>
             <th>

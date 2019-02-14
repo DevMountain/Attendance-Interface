@@ -6,27 +6,30 @@ import { Link } from "react-router-dom";
 import CohortSelector from "./CohortSelector";
 import axios from "axios";
 import moment from 'moment'
-import { withStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import 'date-fns';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
+import InfiniteCalendar from 'react-infinite-calendar';
+import 'react-infinite-calendar/styles.css';
 
-const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: '5rem',
-    marginRight: '5rem',
-    width: 150,
-  },
-  grid: {
-    width: '60%',
-  }
-});
+
+
+
+
+
+
+
+// const styles = theme => ({
+//   container: {
+//     display: "flex",
+//     flexWrap: "wrap"
+//   },
+//   textField: {
+//     marginLeft: '5rem',
+//     marginRight: '5rem',
+//     width: 150,
+//   },
+//   grid: {
+//     width: '60%',
+//   }
+// });
 
 
 class Nav extends Component {
@@ -34,7 +37,8 @@ class Nav extends Component {
     cohorts: [],
     selectedCohort: 'WPR39',
     location: '',
-    selectedDate:moment().format('YYYY-MM-DD') 
+    selectedDate:moment().format('YYYY-MM-DD'),
+    dateModal: false
   }
   componentDidMount(){
     axios.get('/api/getAllCohorts').then(res => {
@@ -53,12 +57,18 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
-  updateSelectedDate = () => date => {
-    this.setState({ selectedDate: date });
+  updateSelectedDate = (date) => {
+    date = date.toLocaleDateString("en-US") //turns Date object into string
+
+    this.setState({ selectedDate: date, dateModal: false });
+    
   };
+  onChange = (date, dateString) => {
+    console.log(date, dateString);
+  }
   render() {
     const { classes } = this.props;
-    const { cohorts, selectedCohort, location, selectedDate } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate, dateModal } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -79,17 +89,7 @@ class Nav extends Component {
                   updateLocation={this.updateLocation} 
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container className={classes.grid} justify="space-around">
-                    <DatePicker
-                      margin="normal"
-                      label="Date picker"
-                      value={selectedDate}
-                      onChange={this.updateSelectedDate()}
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-           
+                <button onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
               </div>
             ) : (
               <h2>
@@ -119,10 +119,25 @@ class Nav extends Component {
               ? this.props.render(selectedCohort, selectedDate)
               : this.props.children}
           </div>
+          { dateModal &&
+            <div className="modal-date-picker" onClick={() => this.setState({dateModal: false})}>
+                <div onClick={(e) => e.stopPropagation()} >
+                <InfiniteCalendar
+                  width={600}
+                  height={400}
+                  selected={selectedDate}
+                  onSelect={(e) => this.updateSelectedDate(e)}
+                  />
+                </div>
+            </div>
+            
+
+           }
+
         </div>
       </>
     );
   }
 }
 
-export default withStyles(styles)(withRouter(Nav))
+export default withRouter(Nav)
