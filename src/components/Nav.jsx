@@ -8,6 +8,10 @@ import axios from "axios";
 import moment from 'moment'
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 
 const styles = theme => ({
   container: {
@@ -18,6 +22,9 @@ const styles = theme => ({
     marginLeft: '5rem',
     marginRight: '5rem',
     width: 150,
+  },
+  grid: {
+    width: '60%',
   }
 });
 
@@ -46,8 +53,8 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
-  updateSelectedDate = () => e => {
-    this.setState({ selectedDate: e.target.value });
+  updateSelectedDate = () => date => {
+    this.setState({ selectedDate: date });
   };
   render() {
     const { classes } = this.props;
@@ -72,18 +79,16 @@ class Nav extends Component {
                   updateLocation={this.updateLocation} 
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
-                <form className={classes.container} noValidate>
-                  <TextField
-                    id="date"
-                    type="date"
-                    defaultValue={selectedDate}
-                    onChange={this.updateSelectedDate()}
-                    className={classes.textField}
-                    InputProps={{
-                      disableUnderline: true
-                    }}
-                  />
-                </form>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container className={classes.grid} justify="space-around">
+                    <DatePicker
+                      margin="normal"
+                      label="Date picker"
+                      value={selectedDate}
+                      onChange={this.updateSelectedDate()}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
            
               </div>
             ) : (
