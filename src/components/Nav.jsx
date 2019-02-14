@@ -37,7 +37,7 @@ class Nav extends Component {
     cohorts: [],
     selectedCohort: 'WPR39',
     location: '',
-    selectedDate:moment().format('YYYY-MM-DD'),
+    selectedDate:moment().format('MM/DD/YYYY'),
     dateModal: false
   }
   componentDidMount(){
@@ -84,6 +84,8 @@ class Nav extends Component {
                 <h2 style={{ textAlign: "center", fontSize: "1.8rem" }}>
                   {selectedCohort} Attendance
                 </h2>
+                <button className='date-button' onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
+
                 <CohortSelector
                   cohorts={cohorts}
                   selectedCohort={selectedCohort}
@@ -91,7 +93,6 @@ class Nav extends Component {
                   updateLocation={this.updateLocation}
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
-                <button onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
               </div>
             ) : (
               <h2>
@@ -106,6 +107,7 @@ class Nav extends Component {
 
             <h3>
               Carter Childs{" "}
+              
               <span className="dropdown">
                 <span>
                   <i className="down-arrow fas fa-chevron-down" />
@@ -125,6 +127,18 @@ class Nav extends Component {
             <div className="modal-date-picker" onClick={() => this.setState({dateModal: false})}>
                 <div onClick={(e) => e.stopPropagation()} >
                 <InfiniteCalendar
+                  theme={{
+                    floatingNav: {
+                      background: '#333333',
+                      chevron: 'transparent',
+                      color: 'white'
+                    },
+                    accentColor: 'black',
+                    headerColor: '#333333',
+                    weekdayColor: '#2aabe2',
+                    selectionColor: '#2aabe2',
+                    todayColor: '#333333'
+                  }}
                   width={600}
                   height={400}
                   selected={selectedDate}
