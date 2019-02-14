@@ -117,20 +117,24 @@ class CohortView extends Component {
     let dayOfWeek = moment(date).format('ddd')
     console.log(dayOfWeek)
     const cohortDataTable = sortedCohortData.map((cohort, index) => {
-      let date = moment(cohort.date);
-      let formattedDate = `${date.format("dddd")}, ${date.format(
-        "MM-DD-YYYY"
-      )}`;
       let firstPing = moment(cohort.first_ping, "HH:mm:ss").format("h:mm A");
       let lastPing = moment(cohort.last_ping, "HH:mm:ss").format("h:mm A");
-      let dayStart = '9:05 AM'
-      let dayEnd = '4:50 PM'
-      if(dayOfWeek === 'Fri'){
-        dayStart = '9:36 AM'
-      }
+      
+      let selectedDay = moment(cohort.date).format('MM/DD/YYYY');
+      let today = moment().format('MM/DD/YYYY')
+      // let today = '08/30/2018'
+      let currentTime = moment().format('h:mm A')
+      // let currentTime = '3:30 PM'
 
-      let test = moment(firstPing, "h:mm A").isBefore(moment(dayStart, 'h:mm A'));
-      console.log(test)
+      let dayStart = '9:01 AM' //9:01 or later will be marked red instead of green
+      let dayEnd = '4:50 PM'
+      if(selectedDay === today && moment(currentTime, 'h:mm A').isBefore(moment(dayEnd, 'h:mm A'))){
+        dayEnd = moment(currentTime, 'h:mm A').subtract(10, 'minutes').format('h:mm A')
+      }
+      // if(dayOfWeek === 'Fri'){
+      //   dayStart = '9:36 AM'
+      // }
+
       return (
         <>
           <tr className="table-rows">
