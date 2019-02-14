@@ -5,32 +5,39 @@ import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const styles = theme => ({
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: "5rem",
+    marginRight: "5rem",
+    width: 150
+  }
+});
 
-
-
-
- class CohortView extends Component {
+class CohortView extends Component {
   state = {
     cohort: this.props.cohort,
     // currentDate: moment().format('MM-DD-YYYY'),
-    currentDate: "8/30/18",
-    cohortData: []
+    currentDate: moment(this.props.date, "YYYY-MM-DD").format("MM-DD-YYYY"),
+    cohortData: [],
+    sortBy: "time in desc"
   };
 
-
-
   componentDidMount() {
-
     this.getCohortData();
   }
   componentDidUpdate(prevProps) {
     if (prevProps.cohort !== this.props.cohort) this.getCohortData();
+    if (prevProps.date !== this.props.date) this.getCohortData();
   }
   getCohortData = () => {
     console.log(this.props.cohort);
     axios
       .post("/api/getCohort", {
-        date: this.state.currentDate,
+        date: this.props.date,
         cohort: this.props.cohort
       })
       .then(res => {
@@ -40,10 +47,70 @@ import { Link } from "react-router-dom";
         });
       });
   };
-  render() {
 
-    let currentDate = moment().format('YYYY-MM-DD')
-    const cohortDataTable = this.state.cohortData.map((cohort, index) => {
+  handleSortBy = sortBy => {
+    this.setState({ sortBy });
+  };
+  render() {
+    const { classes, date } = this.props;
+    const { cohortData, sortBy } = this.state;
+    console.log(date, cohortData);
+    let sortedCohortData = cohortData.slice();
+    if (sortBy === "time in asc") {
+      sortedCohortData.sort((a, b) => {
+        if (
+          moment(a.first_ping, "h:mm A").isBefore(
+            moment(b.first_ping, "h:mm A")
+          )
+        ) {
+          return -1;
+          console.log(b - a);
+        } else {
+          return 1;
+        }
+      });
+    } else if (sortBy === "time in desc") {
+      sortedCohortData = cohortData.slice();
+    } else if (sortBy === "name asc") {
+      sortedCohortData.sort((a, b) => {
+        if (b.last_name.toLowerCase() < a.last_name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    } else if (sortBy === "name desc") {
+      sortedCohortData.sort((a, b) => {
+        if (b.last_name.toLowerCase() > a.last_name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    } else if (sortBy === "time out asc") {
+      sortedCohortData.sort((a, b) => {
+        if (
+          moment(a.last_ping, "h:mm A").isBefore(moment(b.last_ping, "h:mm A"))
+        ) {
+          return -1;
+        } else {
+          return 1;
+        }
+      });
+    } else if (sortBy === "time out desc") {
+      sortedCohortData.sort((a, b) => {
+        if (
+          moment(a.last_ping, "h:mm A").isBefore(moment(b.last_ping, "h:mm A"))
+        ) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+    }
+
+    let currentDate = moment().format("YYYY-MM-DD");
+    const cohortDataTable = sortedCohortData.map((cohort, index) => {
       let date = moment(cohort.date);
       let formattedDate = `${date.format("dddd")}, ${date.format(
         "MM-DD-YYYY"
@@ -63,39 +130,35 @@ import { Link } from "react-router-dom";
             </td>
 
             {cohort.first_ping === null ? (
-              <td
-              style={{ color: "#2aabe2", textAlign: "center" }}
-              >
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 Student Has Not Yet Arrived
               </td>
             ) : (
               <td
-              className={
-                moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
-                ? "first-ping-green"
-                : "first-ping-red"
-              }
+                className={
+                  moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
+                    ? "first-ping-green"
+                    : "first-ping-red"
+                }
               >
                 {firstPing}
               </td>
             )}
 
             {cohort.last_ping === null ? (
-              <td
-                style={{ color: "#2aabe2", textAlign: "center" }}
-                >
-                Student Has Not Yet Left
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
+                Student Has Not Yet Arrived
               </td>
             ) : (
               <td
-              className={
-                moment(lastPing, "h:mm A").isAfter(
-                  moment("5:00 PM", "h:mm A")
+                className={
+                  moment(lastPing, "h:mm A").isAfter(
+                    moment("5:00 PM", "h:mm A")
                   )
-                  ? "first-ping-green"
-                  : "first-ping-red"
+                    ? "first-ping-green"
+                    : "first-ping-red"
                 }
-                >
+              >
                 {lastPing}
               </td>
             )}
@@ -109,13 +172,65 @@ import { Link } from "react-router-dom";
         <table className="cohort-table">
           <tr className="table-rows">
             <th className="table-header">
-              <span>Name</span>
+              {sortBy === "name asc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("name desc")}>
+                    Name{" "}
+                  </span>
+                  <i class="fas fa-angle-up" />
+                </>
+              ) : sortBy === "name desc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("name asc")}>
+                    Name{" "}
+                  </span>
+                  <i class="fas fa-angle-down" />
+                </>
+              ) : (
+                <span onClick={() => this.handleSortBy("name asc")}>Name </span>
+              )}
             </th>
             <th>
-              <span>Time In</span>
+              {sortBy === "time in asc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("time in desc")}>
+                    Time In{" "}
+                  </span>
+                  <i class="fas fa-angle-up" />
+                </>
+              ) : sortBy === "time in desc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("time in asc")}>
+                    Time In{" "}
+                  </span>
+                  <i class="fas fa-angle-down" />
+                </>
+              ) : (
+                <span onClick={() => this.handleSortBy("time in desc")}>
+                  Time In{" "}
+                </span>
+              )}
             </th>
             <th>
-              <span>Time Out</span>
+              {sortBy === "time out asc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("time out desc")}>
+                    Time Out{" "}
+                  </span>
+                  <i class="fas fa-angle-up" />
+                </>
+              ) : sortBy === "time out desc" ? (
+                <>
+                  <span onClick={() => this.handleSortBy("time out asc")}>
+                    Time Out{" "}
+                  </span>
+                  <i class="fas fa-angle-down" />
+                </>
+              ) : (
+                <span onClick={() => this.handleSortBy("time out desc")}>
+                  Time Out{" "}
+                </span>
+              )}
             </th>
             <th>
               <span>Comments</span>
@@ -127,5 +242,4 @@ import { Link } from "react-router-dom";
     );
   }
 }
-export default CohortView
-
+export default CohortView;

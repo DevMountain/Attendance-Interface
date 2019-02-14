@@ -11,7 +11,7 @@ const CohortSelector =(props) => {
             return <option key={cohort.cohort} value={cohort.cohort}>{cohort.cohort}</option>
         })
         return ( 
-            <div className='select-inner-container'>
+            <div>
                 <select className='location-select' value={location} onChange={updateLocation()}>
                     <option default value=''>All Locations</option>
                     <option value='Dallas'>Dallas</option>

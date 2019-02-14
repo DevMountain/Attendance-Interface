@@ -103,9 +103,10 @@
 }
 
 .select-container {
-    display: flex;
+    width: 60vw;
+    /* display: flex;
     align-items: center;
-    justify-content: space-between
+    justify-content: space-between */
 }
 
 .menu-container {
