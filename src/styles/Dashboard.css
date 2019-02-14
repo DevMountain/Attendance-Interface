@@ -24,7 +24,9 @@
 .cohort-table {
     margin-top: 0;
 }
-
+.column-title:hover{
+    cursor: pointer;
+}
 .student-link {
     color: white;
 }

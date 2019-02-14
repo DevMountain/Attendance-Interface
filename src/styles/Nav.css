@@ -9,6 +9,17 @@
     align-items: center;
 }
 
+.modal-date-picker{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #8181815b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .student-main {
     min-height: 90vh;
