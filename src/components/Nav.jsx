@@ -6,13 +6,28 @@ import { Link } from "react-router-dom";
 import CohortSelector from "./CohortSelector";
 import axios from "axios";
 import moment from 'moment'
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+
+const styles = theme => ({
+  container: {
+    display: "flex",
+    flexWrap: "wrap"
+  },
+  textField: {
+    marginLeft: '5rem',
+    marginRight: '5rem',
+    width: 150,
+  }
+});
 
 
 class Nav extends Component {
   state = {
     cohorts: [],
     selectedCohort: 'WPR39',
-    location: '' 
+    location: '',
+    selectedDate:moment().format('YYYY-MM-DD') 
   }
   componentDidMount(){
     axios.get('/api/getAllCohorts').then(res => {
@@ -31,9 +46,12 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
+  updateSelectedDate = () => e => {
+    this.setState({ selectedDate: e.target.value });
+  };
   render() {
     const { classes } = this.props;
-    const { cohorts, selectedCohort, location } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -54,6 +72,18 @@ class Nav extends Component {
                   updateLocation={this.updateLocation} 
                   updateSelectedCohort={this.updateSelectedCohort}
                 />
+                <form className={classes.container} noValidate>
+                  <TextField
+                    id="date"
+                    type="date"
+                    defaultValue={selectedDate}
+                    onChange={this.updateSelectedDate()}
+                    className={classes.textField}
+                    InputProps={{
+                      disableUnderline: true
+                    }}
+                  />
+                </form>
            
               </div>
             ) : (
@@ -81,7 +111,7 @@ class Nav extends Component {
           </div>
           <div className="attendance-container">
             {this.props.render
-              ? this.props.render(selectedCohort)
+              ? this.props.render(selectedCohort, selectedDate)
               : this.props.children}
           </div>
         </div>
@@ -90,4 +120,4 @@ class Nav extends Component {
   }
 }
 
-export default withRouter(Nav)
+export default withStyles(styles)(withRouter(Nav))

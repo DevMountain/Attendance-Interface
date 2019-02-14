@@ -29,7 +29,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <>
-        <Nav render={cohort => <CohortView cohort={cohort} />} />
+        <Nav render={(cohort, date) => <CohortView cohort={cohort} date={date}/>} />
       </>
     );
   }
