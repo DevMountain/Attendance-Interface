@@ -50,12 +50,8 @@ class Nav extends Component {
     this.setState({ selectedDate: e.target.value });
   };
   render() {
-<<<<<<< HEAD
-    const { cohorts, selectedCohort, location } = this.state;
-=======
     const { classes } = this.props;
     const { cohorts, selectedCohort, location, selectedDate } = this.state;
->>>>>>> master
     return (
       <>
         <div className="nav-main">
