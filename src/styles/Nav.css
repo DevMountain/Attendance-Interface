@@ -3,7 +3,7 @@
 .nav-main {
     font-family: 'Nunito', sans-serif;
     height: 12vh;
-    background-color: #181818;
+    background-color: #0a0808;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,11 +15,13 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #8181815b;
+    background: #131313ad;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+
 
 .student-main {
     min-height: 90vh;
@@ -106,17 +108,11 @@
     height: 5vh;
 }
 
-.cohort-select {
-    height: 1.6rem;
-    font-size: .8rem;
-    margin-bottom: .3rem;
-    margin-left: 1rem;
-}
 
 .select-container {
+    width: 60vw;
     display: flex;
     align-items: center;
-    justify-content: space-between
 }
 
 .menu-container {
@@ -130,13 +126,20 @@
 }
 
 
-#date {
-    color: #2aabe2
+
+.date-button {
+    cursor: pointer;
+    color: white;
+    width: 15vw;
+    height: 5vh;
+    background: #2aabe2;
+    border-radius: 5px;
+    border: solid 1px #2aabe2;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
-.date-cell {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.date-button:hover {
+    border: solid 1px white
+
 }
