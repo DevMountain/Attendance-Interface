@@ -5,28 +5,25 @@ import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-
-
 const styles = theme => ({
   container: {
     display: "flex",
     flexWrap: "wrap"
   },
   textField: {
-    marginLeft: '5rem',
-    marginRight: '5rem',
-    width: 150,
+    marginLeft: "5rem",
+    marginRight: "5rem",
+    width: 150
   }
 });
 
-
- class CohortView extends Component {
+class CohortView extends Component {
   state = {
     cohort: this.props.cohort,
     // currentDate: moment().format('MM-DD-YYYY'),
-    currentDate: moment(this.props.date, 'YYYY-MM-DD').format('MM-DD-YYYY'),
+    currentDate: moment(this.props.date, "YYYY-MM-DD").format("MM-DD-YYYY"),
     cohortData: [],
-    sortBy: 'time in desc'
+    sortBy: "time in desc"
   };
 
   componentDidMount() {
@@ -35,8 +32,6 @@ const styles = theme => ({
   componentDidUpdate(prevProps) {
     if (prevProps.cohort !== this.props.cohort) this.getCohortData();
     if (prevProps.date !== this.props.date) this.getCohortData();
-
-    
   }
   getCohortData = () => {
     console.log(this.props.cohort);
@@ -53,21 +48,25 @@ const styles = theme => ({
       });
   };
 
-  handleSortBy = (sortBy) => {
-    this.setState({sortBy})
-  }
+  handleSortBy = sortBy => {
+    this.setState({ sortBy });
+  };
   render() {
     const { classes, date } = this.props;
-    const { cohortData, sortBy } = this.state
-    console.log(date,cohortData)
-    let sortedCohortData = cohortData.slice()
-    if(sortBy === 'time in asc'){
-     sortedCohortData.sort((a, b) => {
-        if(moment(a.first_ping, 'h:mm A').isBefore(moment(b.first_ping, 'h:mm A'))){
-          return -1
-          console.log(b - a)
-        }else{
-          return 1
+    const { cohortData, sortBy } = this.state;
+    console.log(date, cohortData);
+    let sortedCohortData = cohortData.slice();
+    if (sortBy === "time in asc") {
+      sortedCohortData.sort((a, b) => {
+        if (
+          moment(a.first_ping, "h:mm A").isBefore(
+            moment(b.first_ping, "h:mm A")
+          )
+        ) {
+          return -1;
+          console.log(b - a);
+        } else {
+          return 1;
         }
       })
 
@@ -75,36 +74,40 @@ const styles = theme => ({
       sortedCohortData = cohortData.slice()
     }else if(sortBy === 'name asc'){
       sortedCohortData.sort((a, b) => {
-        if( b.last_name.toLowerCase() < a.last_name.toLowerCase() ){
-          return 1
-        }else {
-          return -1
+        if (b.last_name.toLowerCase() < a.last_name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
         }
-      })
-    }else if(sortBy === 'name desc'){
+      });
+    } else if (sortBy === "name desc") {
       sortedCohortData.sort((a, b) => {
-        if( b.last_name.toLowerCase() > a.last_name.toLowerCase() ){
-          return 1
-        }else {
-          return -1
+        if (b.last_name.toLowerCase() > a.last_name.toLowerCase()) {
+          return 1;
+        } else {
+          return -1;
         }
-      })
-    }else if(sortBy === 'time out asc'){
+      });
+    } else if (sortBy === "time out asc") {
       sortedCohortData.sort((a, b) => {
-        if(moment(a.last_ping, 'h:mm A').isBefore(moment(b.last_ping, 'h:mm A'))){
-          return -1
-        }else{
-          return 1
+        if (
+          moment(a.last_ping, "h:mm A").isBefore(moment(b.last_ping, "h:mm A"))
+        ) {
+          return -1;
+        } else {
+          return 1;
         }
-      })
-    }else if(sortBy === 'time out desc'){
+      });
+    } else if (sortBy === "time out desc") {
       sortedCohortData.sort((a, b) => {
-        if(moment(a.last_ping, 'h:mm A').isBefore(moment(b.last_ping, 'h:mm A'))){
-          return 1
-        }else{
-          return -1
+        if (
+          moment(a.last_ping, "h:mm A").isBefore(moment(b.last_ping, "h:mm A"))
+        ) {
+          return 1;
+        } else {
+          return -1;
         }
-      })
+      });
     }
 
 
@@ -144,9 +147,7 @@ const styles = theme => ({
             </td>
 
             {cohort.first_ping === null ? (
-              <td
-              style={{ color: "#2aabe2", textAlign: "center" }}
-              >
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 Student Has Not Yet Arrived
               </td>
             ) : (
@@ -162,9 +163,7 @@ const styles = theme => ({
             )}
 
             {cohort.last_ping === null ? (
-              <td
-                style={{ color: "#2aabe2", textAlign: "center" }}
-                >
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 Student Has Not Yet Arrived
               </td>
             ) : (
@@ -173,10 +172,10 @@ const styles = theme => ({
                 moment(lastPing, "h:mm A").isAfter(
                   moment(dayEnd, 'h:mm A')
                   )
-                  ? "first-ping-green"
-                  : "first-ping-red"
+                    ? "first-ping-green"
+                    : "first-ping-red"
                 }
-                >
+              >
                 {lastPing}
               </td>
             )}
@@ -235,7 +234,4 @@ const styles = theme => ({
     );
   }
 }
-export default (CohortView)
-
-
-
+export default CohortView;
