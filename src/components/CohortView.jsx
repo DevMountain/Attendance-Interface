@@ -70,6 +70,7 @@ const styles = theme => ({
           return 1
         }
       })
+      
     }else if(sortBy === 'time in desc'){
       sortedCohortData = cohortData.slice()
     }else if(sortBy === 'name asc'){
