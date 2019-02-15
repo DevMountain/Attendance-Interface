@@ -110,9 +110,9 @@
 
 
 .select-container {
-    width: 60vw;
+    /* width: 60vw;
     display: flex;
-    align-items: center;
+    align-items: center; */
 }
 
 .menu-container {
@@ -120,9 +120,9 @@
     padding-right: 5%;
     color: white;
     width: 100%;
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
 }
 
 
@@ -137,9 +137,36 @@
     border: solid 1px #2aabe2;
     margin-left: 5%;
     margin-right: 5%;
+    font-size:1.3rem
 }
 
 .date-button:hover {
     border: solid 1px white
 
+}
+
+
+.cohort-select {
+    margin-left: 1rem;
+    /* margin-bottom: 2px */
+}
+
+.attendance-date-container {
+    margin-top: 1%;
+text-align: center;
+}
+
+
+.bottom-menu-dashboard {
+    display: flex;
+    justify-content: space-between
+}
+.bottom-menu-student {
+    display: flex;
+    justify-content: space-between
+}
+
+.table-header-cohort {
+    text-align: center;
+    font-size: 1.3rem
 }

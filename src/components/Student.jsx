@@ -92,14 +92,14 @@ class Student extends Component {
 
           <table>
             <tr>
-              <th>
+              <th className='table-header'>
                 <span>Date</span><br/>
 
               </th>
-              <th>
+              <th className='table-header'>
                 <span>Time In</span>
               </th>
-              <th>
+              <th className='table-header'>
                 <span>Time Out</span>
               </th>
             </tr>
