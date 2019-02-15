@@ -1,5 +1,5 @@
 import React from 'react';
-import './../styles/CohortSelector.css'
+import './../styles/Nav.css'
 const CohortSelector =(props) => {
   
         const {cohorts, selectedCohort, location, updateLocation, updateSelectedCohort} = props
