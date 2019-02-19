@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import Student from './components/Student'
+import StudentDashboard from './components/StudentDashboard'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import PrivateRouteStaff from './PrivateRouteStaff';
 import PrivateRouteStudent from './PrivateRouteStudent';
@@ -12,9 +12,9 @@ export default class routes extends Component {
       <Router>
         <Switch>
           <Route exact path="/" component={Login} />
-          <PrivateRouteStaff path="/student/:id" component={Student} />
+          <PrivateRouteStaff path="/student/:id" component={StudentDashboard} />
           <PrivateRouteStaff path="/dashboard" component={Dashboard} />
-          <PrivateRouteStudent path="/student/" component={Student} />
+          <PrivateRouteStudent path="/student/" component={StudentDashboard} />
         </Switch>
       </Router>
     );

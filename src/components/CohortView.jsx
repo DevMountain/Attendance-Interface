@@ -5,25 +5,17 @@ import moment from "moment";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: "5rem",
-    marginRight: "5rem",
-    width: 150
-  }
-});
-
 class CohortView extends Component {
   state = {
     cohort: this.props.cohort,
     // currentDate: moment().format('MM-DD-YYYY'),
     currentDate: moment(this.props.date, "YYYY-MM-DD").format("MM-DD-YYYY"),
     cohortData: [],
-    sortBy: "time in desc"
+    sortBy: "time in desc",
+    slotsToEdit: [],
+    time_in: '',
+    time_out: '',
+    comment: ''
   };
 
   componentDidMount() {
@@ -48,12 +40,43 @@ class CohortView extends Component {
       });
   };
 
+  handleChange = (key) => (e) => {
+    this.setState({
+      [key]: e.target.value
+    })
+  }
+
   handleSortBy = sortBy => {
     this.setState({ sortBy });
   };
+
+  handleSlotsToEdit = (selectedStudent) => {
+    const slotsToEdit = [...this.state.slotsToEdit]
+    const foundIndex = slotsToEdit.findIndex((attendance_id) => {
+      return attendance_id === selectedStudent
+    })
+    if(foundIndex !== -1){
+      slotsToEdit.splice(foundIndex, 1)
+    }else{
+      slotsToEdit.push(selectedStudent)
+    }
+    this.setState({slotsToEdit})
+  }
+
+  saveEdit = () => {
+    const { slotsToEdit, time_in, time_out, comment }  = this.state
+    const promiseArr = []
+    for(let i = 0, length = slotsToEdit.length; i < length; i++){
+      let promise = axios.put('/api/edit', {attendance_id: slotsToEdit[i], time_in, time_out, comment })
+      promiseArr.push(promise)
+    }
+    Promise.all(promiseArr).then(() => {
+      this.getCohortData()
+    })
+  }
   render() {
     const { classes, date } = this.props;
-    const { cohortData, sortBy } = this.state;
+    const { cohortData, sortBy, slotsToEdit, time_in, time_out, comment } = this.state;
     console.log(date, cohortData);
     let sortedCohortData = cohortData.slice();
     if (sortBy === "time in asc") {
@@ -64,7 +87,6 @@ class CohortView extends Component {
           )
         ) {
           return -1;
-          console.log(b - a);
         } else {
           return 1;
         }
@@ -116,11 +138,11 @@ class CohortView extends Component {
 
     let dayOfWeek = moment(date).format('ddd')
     console.log(dayOfWeek)
-    const cohortDataTable = sortedCohortData.map((cohort, index) => {
-      let firstPing = moment(cohort.first_ping, "HH:mm:ss").format("h:mm A");
-      let lastPing = moment(cohort.last_ping, "HH:mm:ss").format("h:mm A");
+    const cohortDataTable = sortedCohortData.map((student, index) => {
+      let firstPing = moment(student.first_ping, "HH:mm:ss").format("h:mm A");
+      let lastPing = moment(student.last_ping, "HH:mm:ss").format("h:mm A");
       
-      let selectedDay = moment(cohort.date).format('MM/DD/YYYY');
+      let selectedDay = moment(student.date).format('MM/DD/YYYY');
       let today = moment().format('MM/DD/YYYY')
       // let today = '08/30/2018'
       let currentTime = moment().format('h:mm A')
@@ -139,14 +161,15 @@ class CohortView extends Component {
         <>
           <tr className="table-rows">
             <td className="table-data-name">
-              <Link className="student-link" to={`/student/${cohort.user_id}`}>
+            <input type="checkbox" onChange={() => this.handleSlotsToEdit(student.attendance_id)} />
+              <Link className="student-link" to={`/student/${student.user_id}`}>
+                  {student.first_name} {student.last_name}
                 <span>
-                  {cohort.first_name} {cohort.last_name}
                 </span>
               </Link>
             </td>
 
-            {cohort.first_ping === null ? (
+            {student.first_ping === null ? (
               <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 Student Has Not Yet Arrived
               </td>
@@ -162,7 +185,7 @@ class CohortView extends Component {
               </td>
             )}
 
-            {cohort.last_ping === null ? (
+            {student.last_ping === null ? (
               <td style={{ color: "#2aabe2", textAlign: "center" }}>
                 Student Has Not Yet Arrived
               </td>
@@ -179,11 +202,12 @@ class CohortView extends Component {
                 {lastPing}
               </td>
             )}
-            <td className="table-data-comments">lalaskdjf;alskdjf</td>
+            <td className="table-data-comments">{student.comment}</td>
           </tr>
         </>
       );
     });
+    console.log(this.state.slotsToEdit)
     return (
       <>
         <table className="cohort-table">
@@ -221,7 +245,7 @@ class CohortView extends Component {
               sortBy === 'time out desc' ?
                 <><span className='column-title' onClick={() => this.handleSortBy('time out asc')}>Time Out </span><i class="fas fa-angle-down"></i></>
               :
-                <span className='column-title' onClick={() => this.handleSortBy('time out desc')}>Time Out </span>
+                <span className='column-title' onClick={() => this.handleSortBy('time out asc')}>Time Out </span>
             }
             </th>
             <th>
@@ -230,6 +254,16 @@ class CohortView extends Component {
           </tr>
           {cohortDataTable}
         </table>
+        {this.props.editToggle &&
+        <div className='edit-modal-wrapper'>
+            <div className="edit-modal">
+              <input placeholder='Time In' onChange={this.handleChange('time_in')} value={this.state.timeIn} type="text"/>
+              <input placeholder='Time Out' onChange={this.handleChange('time_out')} value={this.state.timeOut} type="text"/>
+              <input placeholder='Comment' onChange={this.handleChange('comment')} value={this.state.comment} type="text"/>
+              <button onClick={this.saveEdit}>Save Edit</button>
+            </div>
+        </div>
+        }
       </>
     );
   }

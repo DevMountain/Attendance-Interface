@@ -37,8 +37,10 @@ class Nav extends Component {
     cohorts: [],
     selectedCohort: 'WPR39',
     location: '',
-    selectedDate:moment().format('MM/DD/YYYY'),
-    dateModal: false
+    selectedDate: '08/30/2018',
+    // selectedDate:moment().format('MM/DD/YYYY'),
+    dateModal: false,
+    editModal: false
   }
   componentDidMount(){
     axios.get('/api/getAllCohorts').then(res => {
@@ -63,12 +65,20 @@ class Nav extends Component {
     this.setState({ selectedDate: date, dateModal: false });
     
   };
+
+  closeEditModal = () => {
+    this.setState({editModal: false})
+  }
+  openModalToggle = () => {
+    this.setState({editModal: true})
+  }
+ 
   onChange = (date, dateString) => {
     console.log(date, dateString);
   }
   render() {
     const { classes } = this.props;
-    const { cohorts, selectedCohort, location, selectedDate, dateModal } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate, dateModal, editModal } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -85,7 +95,7 @@ class Nav extends Component {
                   {selectedCohort} Attendance
                 </h2>
                 <button className='date-button' onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
-
+                
                 <CohortSelector
                   cohorts={cohorts}
                   selectedCohort={selectedCohort}
@@ -119,9 +129,9 @@ class Nav extends Component {
             </h3>
           </div>
           <div className="attendance-container">
-            {this.props.render
-              ? this.props.render(selectedCohort, selectedDate)
-              : this.props.children}
+              {
+               this.props.render(selectedCohort, selectedDate, editModal)
+              }
           </div>
           { dateModal &&
             <div className="modal-date-picker" onClick={() => this.setState({dateModal: false})}>
