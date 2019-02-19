@@ -25,7 +25,7 @@ class App extends Component {
   handleUnauthorized = err => {
     const { status } = err.response
     if (status === 404) {
-      window.location = sso
+      // window.location = sso
     }
     else if (status === 400) {
       swal({
