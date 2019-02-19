@@ -15,7 +15,7 @@ class CohortView extends Component {
     slotsToEdit: [],
     time_in: '',
     time_out: '',
-    comment: ''
+    comment: '',
   };
 
   componentDidMount() {
@@ -59,6 +59,11 @@ class CohortView extends Component {
       slotsToEdit.splice(foundIndex, 1)
     }else{
       slotsToEdit.push(selectedStudent)
+    }
+    if(slotsToEdit[0]){
+      this.props.updateEditButtonDisplay(true)
+    }else{
+      this.props.updateEditButtonDisplay(false)
     }
     this.setState({slotsToEdit})
   }
@@ -212,7 +217,7 @@ class CohortView extends Component {
       <>
         <table className="cohort-table">
           <tr className="table-rows">
-            <th className="table-header">
+            <th className="table-header-cohort">
               
               {sortBy === 'name asc' ?
               (
@@ -228,7 +233,7 @@ class CohortView extends Component {
               }
 
             </th>
-            <th>
+            <th className="table-header-cohort">
             {sortBy === 'time in asc' ?
                 <><span className='column-title' onClick={() => this.handleSortBy('time in desc')}>Time In </span><i class="fas fa-angle-up"></i></>
               :
@@ -238,7 +243,7 @@ class CohortView extends Component {
                 <span className='column-title' onClick={() => this.handleSortBy('time in desc')}>Time In </span>
             }
             </th>
-            <th>
+            <th className="table-header-cohort">
             {sortBy === 'time out asc' ?
                 <><span className='column-title' onClick={() => this.handleSortBy('time out desc')}>Time Out </span><i class="fas fa-angle-up"></i></>
               :
@@ -248,7 +253,7 @@ class CohortView extends Component {
                 <span className='column-title' onClick={() => this.handleSortBy('time out asc')}>Time Out </span>
             }
             </th>
-            <th>
+            <th className="table-header-cohort">
               <span>Comments</span>
             </th>
           </tr>

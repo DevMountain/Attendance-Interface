@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import "./../styles/Student.css";
 import axios from "axios";
 import moment from "moment";
+import TimePicker from 'rc-time-picker';
 import { withRouter } from "react-router-dom";
 
 class Student extends Component {
@@ -93,54 +94,54 @@ class Student extends Component {
       if(!student.first_ping && moment(student.date).format('ddd') === 'Sat'){
         return null;
       }else{
-        return (
-          <>
-            <tr key={student.user_id}>
-              <td>{formattedDate}</td>
-              {student.first_ping === null ? (
-                <td style={{ color: "#2aabe2", textAlign: "center" }}>
-                  No Data Available For This Day
-                </td>
-              ) : (
-                <td>
-                  <span
-                    className={
-                      moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
-                        ? "first-ping-green"
-                        : "first-ping-red"
-                    }
-                  >
-                    {firstPing}
-                  </span>
-                  <i class="edit far fa-edit" />
-                </td>
-              )}
+      return (
+        <>
+          <tr key={student.user_id}>
+            <td>{formattedDate}</td>
+            {student.first_ping === null ? (
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
+                No Data Available For This Day
+              </td>
+            ) : (
+              <td>
+                <span
+                  className={
+                    moment(firstPing, "h:mm A").isBefore(moment("9:10", "h:mm"))
+                      ? "first-ping-green"
+                      : "first-ping-red"
+                  }
+                >
+                  {firstPing}
+                </span>
+                <i class="edit far fa-edit" />
+              </td>
+            )}
 
-              {student.last_ping === null ? (
-                <td style={{ color: "#2aabe2", textAlign: "center" }}>
-                  No Data Available For This Day
-                </td>
-              ) : (
-                <td>
-                  <span
-                    className={
-                      moment(lastPing, "h:mm A").isAfter(
-                        moment("5:00 PM", "h:mm A")
-                      )
-                        ? "first-ping-green"
-                        : "first-ping-red"
-                    }
-                  >
-                    {lastPing}
-                  </span>
-                  <i class="edit far fa-edit" />
-                </td>
-              )}
-            </tr>
-          </>
-        );
-      }
-    });
+            {student.last_ping === null ? (
+              <td style={{ color: "#2aabe2", textAlign: "center" }}>
+                No Data Available For This Day
+              </td>
+            ) : (
+              <td>
+                <span
+                  className={
+                    moment(lastPing, "h:mm A").isAfter(
+                      moment("5:00 PM", "h:mm A")
+                    )
+                      ? "first-ping-green"
+                      : "first-ping-red"
+                  }
+                >
+                  {lastPing}
+                </span>
+                <i  class="edit far fa-edit" />
+              </td>
+            )}
+          </tr>
+        </>
+      );
+    }
+  });
     return (
       
         <>

@@ -32,9 +32,10 @@ tr {
     height: 6.5vh;
 }
 
-th {
+.table-header {
     text-align: center;
     font-size: 1.3rem;
+    width: 33.33%
 }
 
 th>span {
@@ -64,4 +65,13 @@ tr:nth-child(odd) {
 
 .edit:hover {
     color: #2aabe2
+}
+
+
+.timepicker-none {
+    display: none;
+}
+
+.timepicker{
+    display: block
 }

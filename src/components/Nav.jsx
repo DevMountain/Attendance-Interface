@@ -5,32 +5,10 @@ import DevMtnLogo from "./../assets/MarkBlue@2x.png";
 import { Link } from "react-router-dom";
 import CohortSelector from "./CohortSelector";
 import axios from "axios";
-import moment from 'moment'
-import InfiniteCalendar from 'react-infinite-calendar';
-import 'react-infinite-calendar/styles.css';
+import moment from "moment";
+import InfiniteCalendar from "react-infinite-calendar";
 
-
-
-
-
-
-
-
-// const styles = theme => ({
-//   container: {
-//     display: "flex",
-//     flexWrap: "wrap"
-//   },
-//   textField: {
-//     marginLeft: '5rem',
-//     marginRight: '5rem',
-//     width: 150,
-//   },
-//   grid: {
-//     width: '60%',
-//   }
-// });
-
+import "react-infinite-calendar/styles.css";
 
 class Nav extends Component {
   state = {
@@ -40,18 +18,8 @@ class Nav extends Component {
     selectedDate: '08/30/2018',
     // selectedDate:moment().format('MM/DD/YYYY'),
     dateModal: false,
-    editModal: false
-  }
-  componentDidMount(){
-    axios.get('/api/getAllCohorts').then(res => {
-        this.setState({cohorts: res.data})
-    })
-  }
-  updateSelectedCohort = () => (e) => {
-    this.setState({selectedCohort: e.target.value})
-  }
-  updateLocation = () => (e) => {
-    this.setState({location: e.target.value})
+    editModal: false,
+    editButtonToggle: false
   }
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
@@ -59,11 +27,16 @@ class Nav extends Component {
   updateLocation = () => e => {
     this.setState({ location: e.target.value });
   };
-  updateSelectedDate = (date) => {
-    date = date.toLocaleDateString("en-US") //turns Date object into string
+  updateSelectedCohort = () => e => {
+    this.setState({ selectedCohort: e.target.value });
+  };
+  updateLocation = () => e => {
+    this.setState({ location: e.target.value });
+  };
+  updateSelectedDate = date => {
+    date = date.toLocaleDateString("en-US"); //turns Date object into string
 
     this.setState({ selectedDate: date, dateModal: false });
-    
   };
 
   closeEditModal = () => {
@@ -75,10 +48,13 @@ class Nav extends Component {
  
   onChange = (date, dateString) => {
     console.log(date, dateString);
+  };
+  editButtonDisplay = (bool) => {
+    this.setState({editButtonToggle: bool})
   }
   render() {
     const { classes } = this.props;
-    const { cohorts, selectedCohort, location, selectedDate, dateModal, editModal } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate, dateModal, editModal, editButtonToggle } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -90,80 +66,109 @@ class Nav extends Component {
         <div className="student-main">
           <div className="menu-container">
             {this.props.match.path === "/dashboard" ? (
-              <div className="select-container">
-                <h2 style={{ textAlign: "center", fontSize: "1.8rem" }}>
-                  {selectedCohort} Attendance
-                </h2>
-                <button className='date-button' onClick={() => this.setState({dateModal: true})}>{selectedDate}</button>
-                
-                <CohortSelector
-                  cohorts={cohorts}
-                  selectedCohort={selectedCohort}
-                  location={location}
-                  updateLocation={this.updateLocation}
-                  updateSelectedCohort={this.updateSelectedCohort}
-                />
+              <div>
+                <div className="attendance-date-container">
+                  <h2 style={{ textAlign: "center", fontSize: "1.8rem" }}>
+                    {selectedCohort} Attendance
+                  </h2>
+                  <button
+                    className="date-button"
+                    onClick={() => this.setState({ dateModal: true })}
+                  >
+                    {selectedDate}
+                  </button>
+                </div>
+
+                <div className="bottom-menu-dashboard">
+                  <div style={{display: 'flex', justifyContent: 'space-between', width: '400px'}}>
+
+                  <CohortSelector
+                    cohorts={cohorts}
+                    selectedCohort={selectedCohort}
+                    location={location}
+                    updateLocation={this.updateLocation}
+                    updateSelectedCohort={this.updateSelectedCohort}
+                    />
+                    { editButtonToggle &&
+                    <button onClick={this.openModalToggle}>Edit</button>
+                    }
+                    </div>
+                  <h3>
+                    Carter Childs{" "}
+                    <span className="dropdown">
+                      <span>
+                        <i className="down-arrow fas fa-chevron-down" />
+                      </span>
+                      <div className="dropdown-content">
+                        <p>Log Out</p>
+                      </div>
+                    </span>
+                  </h3>
+                </div>
               </div>
             ) : (
-              <h2>
-                <span>
-                  <Link style={{ color: "white" }} to="/dashboard">
-                    <i className="arrow-left fas fa-arrow-left" />
-                  </Link>
-                </span>
-                Cohort View
-              </h2>
+              <div
+                style={{ display: "flex", justifyContent: "space-between" }}
+                className="botton-menu-student"
+              >
+                <h2>
+                  <span>
+                    <Link style={{ color: "white" }} to="/dashboard">
+                      <i className="arrow-left fas fa-arrow-left" />
+                    </Link>
+                  </span>
+                  Cohort View
+                </h2>
+                <h3>
+                  Carter Childs{" "}
+                  <span className="dropdown">
+                    <span>
+                      <i className="down-arrow fas fa-chevron-down" />
+                    </span>
+                    <div className="dropdown-content">
+                      <p>Log Out</p>
+                    </div>
+                  </span>
+                </h3>
+              </div>
             )}
-
-            <h3>
-              Carter Childs{" "}
-              
-              <span className="dropdown">
-                <span>
-                  <i className="down-arrow fas fa-chevron-down" />
-                </span>
-                <div className="dropdown-content">
-                  <p>Log Out</p>
-                </div>
-              </span>
-            </h3>
           </div>
           <div className="attendance-container">
               {
-               this.props.render(selectedCohort, selectedDate, editModal)
+               this.props.render(selectedCohort, selectedDate, editModal, this.editButtonDisplay)
               }
           </div>
-          { dateModal &&
-            <div className="modal-date-picker" onClick={() => this.setState({dateModal: false})}>
-                <div onClick={(e) => e.stopPropagation()} >
+          {dateModal && (
+            <div
+              className="modal-date-picker"
+              onClick={() => this.setState({ dateModal: false })}
+            >
+              <div onClick={e => e.stopPropagation()}>
                 <InfiniteCalendar
                   theme={{
                     floatingNav: {
-                      background: '#333333',
-                      chevron: 'transparent',
-                      color: 'white'
+                      background: "#333333",
+                      chevron: "transparent",
+                      color: "white"
                     },
-                    accentColor: 'black',
-                    headerColor: '#333333',
-                    weekdayColor: '#2aabe2',
-                    selectionColor: '#2aabe2',
-                    todayColor: '#333333'
+                    accentColor: "black",
+                    headerColor: "#333333",
+                    weekdayColor: "#2aabe2",
+                    selectionColor: "#2aabe2",
+                    todayColor: "#333333"
                   }}
                   width={600}
                   height={400}
                   selected={selectedDate}
-                  onSelect={(e) => this.updateSelectedDate(e)}
-                  />
-                </div>
+                  onSelect={e => this.updateSelectedDate(e)}
+                />
+              </div>
             </div>
-            
-
-           }
-
+          )}
         </div>
       </>
     );
   }
 }
 
-export default withRouter(Nav)
+export default withRouter(Nav);

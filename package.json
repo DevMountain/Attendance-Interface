@@ -19,6 +19,7 @@
     "massive": "^5.7.2",
     "material-ui-pickers": "^2.2.1",
     "moment": "^2.24.0",
+    "rc-time-picker": "^3.6.2",
     "react": "^16.8.2",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-datepicker": "^2.1.0",
