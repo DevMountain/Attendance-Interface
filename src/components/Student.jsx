@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import "./../styles/Student.css";
 import axios from "axios";
 import moment from "moment";
+import TimePicker from 'rc-time-picker';
 import { withRouter } from "react-router-dom";
 
 class Student extends Component {
@@ -12,7 +13,7 @@ class Student extends Component {
         first_name: "",
         last_name: ""
       }
-    ]
+    ],
   };
 
   componentDidMount() {
@@ -73,7 +74,8 @@ class Student extends Component {
                 >
                   {lastPing}
                 </span>
-                <i class="edit far fa-edit" />
+                <i  class="edit far fa-edit" />
+                />
               </td>
             )}
           </tr>

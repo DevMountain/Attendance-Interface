@@ -7,6 +7,7 @@ import CohortSelector from "./CohortSelector";
 import axios from "axios";
 import moment from "moment";
 import InfiniteCalendar from "react-infinite-calendar";
+
 import "react-infinite-calendar/styles.css";
 
 class Nav extends Component {

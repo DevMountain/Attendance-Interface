@@ -12,7 +12,6 @@ export default class Dashboard extends Component {
     cohortList: [],
     // currentDate: moment().format('MM-DD-YYYY'),
     currentDate: "8/31/18",
-
     cohortData: []
   };
 
@@ -29,7 +28,9 @@ export default class Dashboard extends Component {
   render() {
     return (
       <>
-        <Nav render={(cohort, date) => <CohortView cohort={cohort} date={date}/>} />
+        <Nav
+          render={(cohort, date) => <CohortView cohort={cohort} date={date} />}
+        />
       </>
     );
   }
