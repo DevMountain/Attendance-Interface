@@ -9,7 +9,7 @@
     align-items: center;
 }
 
-.modal-date-picker{
+.modal-date-picker {
     position: absolute;
     top: 0;
     left: 0;
@@ -137,23 +137,29 @@
     border: solid 1px #2aabe2;
     margin-left: 5%;
     margin-right: 5%;
-    font-size:1.3rem
+    font-size: 1.3rem
 }
 
 .date-button:hover {
     border: solid 1px white
-
 }
 
 
 .cohort-select {
+    font-family: 'Nunito', sans-serif;
+
     margin-left: 1rem;
     /* margin-bottom: 2px */
 }
 
+.location-select {
+    font-family: 'Nunito', sans-serif;
+
+}
+
 .attendance-date-container {
     margin-top: 1%;
-text-align: center;
+    text-align: center;
 }
 
 
@@ -161,6 +167,7 @@ text-align: center;
     display: flex;
     justify-content: space-between
 }
+
 .bottom-menu-student {
     display: flex;
     justify-content: space-between

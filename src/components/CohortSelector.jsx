@@ -5,7 +5,7 @@ const CohortSelector =(props) => {
         const {cohorts, selectedCohort, location, updateLocation, updateSelectedCohort} = props
         let filteredCohorts = cohorts
         if(location){
-            filteredCohorts = cohorts.slice().filter(cohort => cohort.location === location)
+            filteredCohorts = cohorts.filter(cohort => cohort.location === location)
         }
         const cohortSelectors = filteredCohorts.map(cohort => {
             return <option key={cohort.cohort} value={cohort.cohort}>{cohort.cohort}</option>
@@ -16,7 +16,7 @@ const CohortSelector =(props) => {
                     <option default value=''>All Locations</option>
                     <option value='Dallas'>Dallas</option>
                     <option value='Lehi'>Lehi</option>
-                    <option value='PHX'>Pheonix</option>
+                    <option value='PHX'>Phoenix</option>
                     <option value='Provo'>Provo</option>
                 </select>
                 <select className='cohort-select'value={selectedCohort} onChange={updateSelectedCohort()}>
