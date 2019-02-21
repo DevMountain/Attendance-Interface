@@ -13,15 +13,13 @@ import "react-infinite-calendar/styles.css";
 class Nav extends Component {
   state = {
     cohorts: [],
-    selectedCohort: "WPR39",
-    location: "",
-    selectedDate: "08/30/2018",
-    dateModal: false
-  };
-  componentDidMount() {
-    axios.get("/api/getAllCohorts").then(res => {
-      this.setState({ cohorts: res.data });
-    });
+    selectedCohort: 'WPR39',
+    location: '',
+    selectedDate: '08/30/2018',
+    // selectedDate:moment().format('MM/DD/YYYY'),
+    dateModal: false,
+    editModal: false,
+    editButtonToggle: false
   }
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
@@ -40,18 +38,23 @@ class Nav extends Component {
 
     this.setState({ selectedDate: date, dateModal: false });
   };
+
+  closeEditModal = () => {
+    this.setState({editModal: false})
+  }
+  openModalToggle = () => {
+    this.setState({editModal: true})
+  }
+ 
   onChange = (date, dateString) => {
     console.log(date, dateString);
   };
+  editButtonDisplay = (bool) => {
+    this.setState({editButtonToggle: bool})
+  }
   render() {
     const { classes } = this.props;
-    const {
-      cohorts,
-      selectedCohort,
-      location,
-      selectedDate,
-      dateModal
-    } = this.state;
+    const { cohorts, selectedCohort, location, selectedDate, dateModal, editModal, editButtonToggle } = this.state;
     return (
       <>
         <div className="nav-main">
@@ -77,14 +80,19 @@ class Nav extends Component {
                 </div>
 
                 <div className="bottom-menu-dashboard">
+                  <div style={{display: 'flex', justifyContent: 'space-between', width: '400px'}}>
+
                   <CohortSelector
                     cohorts={cohorts}
                     selectedCohort={selectedCohort}
                     location={location}
                     updateLocation={this.updateLocation}
                     updateSelectedCohort={this.updateSelectedCohort}
-                  />
-
+                    />
+                    { editButtonToggle &&
+                    <button onClick={this.openModalToggle}>Edit</button>
+                    }
+                    </div>
                   <h3>
                     Carter Childs{" "}
                     <span className="dropdown">
@@ -126,9 +134,9 @@ class Nav extends Component {
             )}
           </div>
           <div className="attendance-container">
-            {this.props.render
-              ? this.props.render(selectedCohort, selectedDate)
-              : this.props.children}
+              {
+               this.props.render(selectedCohort, selectedDate, editModal, this.editButtonDisplay)
+              }
           </div>
           {dateModal && (
             <div

@@ -54,6 +54,7 @@ app.get('/api/auth/login', authCtrl.login);
 app.get('/api/getAllCohorts', attCtrl.getAllCohorts)
 app.get('/api/getStudent/:id', attCtrl.getStudent)
 app.post('/api/getCohort', attCtrl.getCohortAttendance)
+app.put('/api/edit', attCtrl.editAttendance)
 
 app.listen(SERVER_PORT, () => {
   console.log(`${SERVER_PORT} Duck sized horses marching`);
