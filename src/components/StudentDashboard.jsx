@@ -6,7 +6,7 @@ const StudentDashboard = () => {
     return (
         <>
         <Nav
-          render={() => <Student />}
+          render={(editToggle, updateEditButtonDisplay) => <Student editToggle={editToggle} updateEditButtonDisplay={updateEditButtonDisplay}/>}
         />
         </>
     )

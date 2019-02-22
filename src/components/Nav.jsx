@@ -12,7 +12,7 @@ import "react-infinite-calendar/styles.css";
 
 class Nav extends Component {
   state = {
-    cohorts: [],
+    cohorts: [], 
     selectedCohort: 'WPR39',
     location: '',
     selectedDate: '08/30/2018',
@@ -21,6 +21,11 @@ class Nav extends Component {
     editModal: false,
     editButtonToggle: false
   }
+  componentDidMount() {
+    axios.get("/api/getAllCohorts").then(res => {
+      this.setState({ cohorts: res.data });
+    });
+  }no
   updateSelectedCohort = () => e => {
     this.setState({ selectedCohort: e.target.value });
   };
@@ -49,7 +54,7 @@ class Nav extends Component {
   onChange = (date, dateString) => {
     console.log(date, dateString);
   };
-  editButtonDisplay = (bool) => {
+  updateEditButtonDisplay = (bool) => {
     this.setState({editButtonToggle: bool})
   }
   render() {
@@ -119,6 +124,9 @@ class Nav extends Component {
                   </span>
                   Cohort View
                 </h2>
+                { editButtonToggle &&
+                    <button onClick={this.openModalToggle}>Edit</button>
+                    }
                 <h3>
                   Carter Childs{" "}
                   <span className="dropdown">
@@ -135,7 +143,7 @@ class Nav extends Component {
           </div>
           <div className="attendance-container">
               {
-               this.props.render(selectedCohort, selectedDate, editModal, this.editButtonDisplay)
+               this.props.render(editModal, this.updateEditButtonDisplay, selectedCohort, selectedDate)
               }
           </div>
           {dateModal && (
