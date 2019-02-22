@@ -37,17 +37,62 @@
 
 
 .edit-modal {
+    padding: 1rem;
     background: #0a0808;
-    height: 40vh;
-    width: 30%;
+    height: 50vh;
+    width: 45%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
+    justify-content: space-between
 }
 
 
+.edit-input {
+    resize: horizontal;
+    border: 3px solid #2AABDF;
 
+}
+
+
+.save-edit {
+    background: #2AABDF;
+    border: 1px solid #2AABDF;
+    width: 20%;
+    height: 10%;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 5%;
+}
+
+
+.save-edit:hover {
+    border: 1px solid white
+}
+
+.launch-edit {
+    width: 5rem;
+    height: 1.8rem;
+    background: #181818;
+    border-radius: 6px;
+    color: #2AABE2;
+    cursor: pointer;
+    border: 1px solid #2AABE2;
+    margin-left: 1rem;
+
+}
+
+.launch-edit:hover {
+    border: 1px solid white;
+    color: white;
+}
+
+.menu-container-left {
+    display: flex;
+    align-items: center;
+
+    
+}
 .student-main {
     min-height: 90vh;
     background-color: #212121;

@@ -14,9 +14,9 @@ class CohortView extends Component {
     cohortData: [],
     sortBy: "time in desc",
     slotsToEdit: [],
-    time_in: '',
-    time_out: '',
-    comment: '',
+    time_in: "",
+    time_out: "",
+    comment: "",
     checkAll: false
   };
 
@@ -84,28 +84,35 @@ class CohortView extends Component {
       promiseArr.push(promise);
     }
     Promise.all(promiseArr).then(() => {
-      this.getCohortData()
-    })
-  }
+      this.getCohortData();
+    });
+  };
   checkAll = () => {
-    const {cohortData, checkAll} = this.state
-    if(checkAll){
-      this.setState({checkAll: false, slotsToEdit: []})
-      this.props.updateEditButtonDisplay(false)
-    }else{
-      let newSlotArr = []
+    const { cohortData, checkAll } = this.state;
+    if (checkAll) {
+      this.setState({ checkAll: false, slotsToEdit: [] });
+      this.props.updateEditButtonDisplay(false);
+    } else {
+      let newSlotArr = [];
       cohortData.forEach(slot => {
-        newSlotArr.push(slot.attendance_id)
-        this.props.updateEditButtonDisplay(true)
-      })
+        newSlotArr.push(slot.attendance_id);
+        this.props.updateEditButtonDisplay(true);
+      });
 
-      this.setState({checkAll: true, slotsToEdit: newSlotArr})
-
+      this.setState({ checkAll: true, slotsToEdit: newSlotArr });
     }
-  }
+  };
   render() {
     const { classes, date } = this.props;
-    const { cohortData, sortBy, slotsToEdit, time_in, time_out, comment, checkAll } = this.state;
+    const {
+      cohortData,
+      sortBy,
+      slotsToEdit,
+      time_in,
+      time_out,
+      comment,
+      checkAll
+    } = this.state;
     console.log(checkAll);
     let sortedCohortData = cohortData.slice();
     if (sortBy === "time in asc") {
@@ -189,8 +196,14 @@ class CohortView extends Component {
       return (
         <>
           <tr className="table-rows">
-            <td className='table-data-check'>
-            <input type="checkbox" checked={this.state.slotsToEdit.indexOf(student.attendance_id) !== -1} onChange={() => this.handleSlotsToEdit(student.attendance_id)} />
+            <td className="table-data-check">
+              <input
+                type="checkbox"
+                checked={
+                  this.state.slotsToEdit.indexOf(student.attendance_id) !== -1
+                }
+                onChange={() => this.handleSlotsToEdit(student.attendance_id)}
+              />
             </td>
             <td className="table-data-name">
               <Link className="student-link" to={`/student/${student.user_id}`}>
@@ -242,7 +255,13 @@ class CohortView extends Component {
       <>
         <table className="cohort-table">
           <tr className="table-rows">
-            <th className='table-header-cohort'><input value={this.state.checkAll} onChange={this.checkAll} type="checkbox"/></th>
+            <th className="table-header-cohort">
+              <input
+                value={this.state.checkAll}
+                onChange={this.checkAll}
+                type="checkbox"
+              />
+            </th>
             <th className="table-header-cohort">
               {sortBy === "name asc" ? (
                 <>
@@ -342,12 +361,14 @@ class CohortView extends Component {
         {this.props.editToggle && (
           <div className="edit-modal-wrapper">
             <div className="edit-modal">
-              <h1>Select A Time</h1>
+              <h1 style={{ color: "#2aabe2", position: 'relative', top: '5%' }}>Select A Time</h1>
+              
               <TimePicker
                 showSecond={false}
                 defaultValue={moment("9:00 AM", "h:mm a")}
                 use12Hours
               />
+
               <TimePicker
                 showSecond={false}
                 defaultValue={moment("5:00 PM", "h:mm a")}
@@ -360,7 +381,7 @@ class CohortView extends Component {
                 value={this.state.comment}
                 type="text"
               />
-              <button onClick={this.saveEdit}>Save Edit</button>
+              <button className='save-edit' onClick={this.saveEdit}>Save Edit</button>
             </div>
           </div>
         )}
