@@ -18,7 +18,7 @@ class Nav extends Component {
     selectedDate: '08/30/2018',
     // selectedDate:moment().format('MM/DD/YYYY'),
     dateModal: false,
-    editModal: false,
+    editModal: true ,
     editButtonToggle: false
   }
   updateSelectedCohort = () => e => {
