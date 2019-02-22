@@ -1,6 +1,7 @@
 
 .table-data-check{
     padding: 10px;
+    text-align: center;
 }
 .table-data-name {
     width: 20%;
@@ -22,7 +23,8 @@
 }
 
 .table-data-comments {
-    width: 40%
+    width: 40%;
+   
 }
 .cohort-table {
     margin-top: 0;
