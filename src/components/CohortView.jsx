@@ -250,7 +250,7 @@ class CohortView extends Component {
         </>
       );
     });
-
+//
     return (
       <>
         <table className="cohort-table">
@@ -362,7 +362,7 @@ class CohortView extends Component {
           <div className="edit-modal-wrapper">
             <div className="edit-modal">
               <h1 style={{ color: "#2aabe2", position: 'relative', top: '5%' }}>Select A Time</h1>
-              
+
               <TimePicker
                 showSecond={false}
                 defaultValue={moment("9:00 AM", "h:mm a")}
