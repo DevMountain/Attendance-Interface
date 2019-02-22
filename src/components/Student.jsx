@@ -11,10 +11,19 @@ class Student extends Component {
     studentInfo: [ ],
     first_name: '',
     last_name: '',
-    sortBy: 'date desc'
+    sortBy: 'date desc',
+    slotsToEdit: [],
+    checkAll: false,
+    time_in: '', 
+    time_out: '', 
+    comment: ''
   };
 
   componentDidMount() {
+    this.getStudentData()
+  }
+
+  getStudentData = () => {
     axios.get(`/api/getStudent/${this.props.match.params.id}`).then(res => {
       this.setState({
         studentInfo: res.data,
@@ -23,13 +32,64 @@ class Student extends Component {
       });
     });
   }
+
+  handleChange = (key) => (e) => {
+    this.setState({
+      [key]: e.target.value
+    })
+  }
   handleSort = (sortBy) => () => {
     this.setState({sortBy})
   }
 
-  render() {
-    const { first_name, last_name, studentInfo, sortBy } = this.state;
+  handleSlotsToEdit = (selectedSlot) => {
+    const slotsToEdit = [...this.state.slotsToEdit]
+    const foundIndex = slotsToEdit.findIndex((attendance_id) => {
+      return attendance_id === selectedSlot
+    })
+    if(foundIndex !== -1){
+      slotsToEdit.splice(foundIndex, 1)
+    }else{
+      slotsToEdit.push(selectedSlot)
+    }
+    if(slotsToEdit[0]){
+      this.props.updateEditButtonDisplay(true)
+    }else{
+      this.props.updateEditButtonDisplay(false)
+    }
+    this.setState({slotsToEdit})
+  }
+  saveEdit = () => {
+    const { slotsToEdit, time_in, time_out, comment }  = this.state
+    const promiseArr = []
+    for(let i = 0, length = slotsToEdit.length; i < length; i++){
+      let promise = axios.put('/api/edit', {attendance_id: slotsToEdit[i], time_in, time_out, comment })
+      promiseArr.push(promise)
+    }
+    Promise.all(promiseArr).then(() => {
+      this.getStudentData()
+    })
+  }
+  checkAll = () => {
+    const {studentInfo, checkAll} = this.state
+    if(checkAll){
+      this.setState({checkAll: false, slotsToEdit: []})
+      this.props.updateEditButtonDisplay(false)
+    }else{
+      let newSlotArr = []
+      studentInfo.forEach(slot => {
+        newSlotArr.push(slot.attendance_id)
+        this.props.updateEditButtonDisplay(true)
+      })
 
+      this.setState({checkAll: true, slotsToEdit: newSlotArr})
+
+    }
+  }
+
+  render() {
+    const { first_name, last_name, studentInfo, sortBy, slotsToEdit } = this.state;
+    console.log(slotsToEdit)
     let sortedStudentInfo = studentInfo.slice()
 
     if (sortBy === "time in asc") {
@@ -97,6 +157,10 @@ class Student extends Component {
       return (
         <>
           <tr key={student.user_id}>
+          <td className='table-data-check'>
+            <input type="checkbox" checked={this.state.slotsToEdit.indexOf(student.attendance_id) !== -1} onChange={() => this.handleSlotsToEdit(student.attendance_id)} />
+            </td>
+            
             <td>{formattedDate}</td>
             {student.first_ping === null ? (
               <td style={{ color: "#2aabe2", textAlign: "center" }}>
@@ -154,6 +218,10 @@ class Student extends Component {
 
           <table>
             <tr>
+            <th>
+              <input value={this.state.checkAll} onChange={this.checkAll} type="checkbox"/>
+            </th>
+
               <th>
                 {sortBy === 'date desc' ?
                   <><span onClick={this.handleSort('date asc')}>Date </span><i class="fas fa-angle-down"></i></>
@@ -188,6 +256,16 @@ class Student extends Component {
             </tr>
             {studentTable}
           </table>
+          {this.props.editToggle &&
+        <div className='edit-modal-wrapper'>
+            <div className="edit-modal">
+              <input placeholder='Time In' onChange={this.handleChange('time_in')} value={this.state.timeIn} type="text"/>
+              <input placeholder='Time Out' onChange={this.handleChange('time_out')} value={this.state.timeOut} type="text"/>
+              <input placeholder='Comment' onChange={this.handleChange('comment')} value={this.state.comment} type="text"/>
+              <button onClick={this.saveEdit}>Save Edit</button>
+            </div>
+        </div>
+        }
           </>
           
       

@@ -16,6 +16,7 @@ class CohortView extends Component {
     time_in: '',
     time_out: '',
     comment: '',
+    checkAll: false
   };
 
   componentDidMount() {
@@ -79,10 +80,26 @@ class CohortView extends Component {
       this.getCohortData()
     })
   }
+  checkAll = () => {
+    const {cohortData, checkAll} = this.state
+    if(checkAll){
+      this.setState({checkAll: false, slotsToEdit: []})
+      this.props.updateEditButtonDisplay(false)
+    }else{
+      let newSlotArr = []
+      cohortData.forEach(slot => {
+        newSlotArr.push(slot.attendance_id)
+        this.props.updateEditButtonDisplay(true)
+      })
+
+      this.setState({checkAll: true, slotsToEdit: newSlotArr})
+
+    }
+  }
   render() {
     const { classes, date } = this.props;
-    const { cohortData, sortBy, slotsToEdit, time_in, time_out, comment } = this.state;
-    console.log(date, cohortData);
+    const { cohortData, sortBy, slotsToEdit, time_in, time_out, comment, checkAll } = this.state;
+    console.log(checkAll);
     let sortedCohortData = cohortData.slice();
     if (sortBy === "time in asc") {
       sortedCohortData.sort((a, b) => {
@@ -165,8 +182,10 @@ class CohortView extends Component {
       return (
         <>
           <tr className="table-rows">
+            <td className='table-data-check'>
+            <input type="checkbox" checked={this.state.slotsToEdit.indexOf(student.attendance_id) !== -1} onChange={() => this.handleSlotsToEdit(student.attendance_id)} />
+            </td>
             <td className="table-data-name">
-            <input type="checkbox" onChange={() => this.handleSlotsToEdit(student.attendance_id)} />
               <Link className="student-link" to={`/student/${student.user_id}`}>
                   {student.first_name} {student.last_name}
                 <span>
@@ -217,6 +236,7 @@ class CohortView extends Component {
       <>
         <table className="cohort-table">
           <tr className="table-rows">
+            <th className='table-header-cohort'><input value={this.state.checkAll} onChange={this.checkAll} type="checkbox"/></th>
             <th className="table-header-cohort">
               
               {sortBy === 'name asc' ?
