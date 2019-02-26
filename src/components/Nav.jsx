@@ -58,6 +58,10 @@ class Nav extends Component {
   updateEditButtonDisplay = bool => {
     this.setState({ editButtonToggle: bool });
   };
+
+  toggleEditModal = () => {
+    this.setState({editModal: false})
+  }
   render() {
     const { classes } = this.props;
     const {
@@ -170,6 +174,7 @@ class Nav extends Component {
           </div>
           <div className="attendance-container">
             {this.props.render(
+              this.toggleEditModal,
               editModal,
               this.updateEditButtonDisplay,
               selectedCohort,

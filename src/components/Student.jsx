@@ -307,8 +307,8 @@ class Student extends Component {
           {studentTable}
         </table>
         {this.props.editToggle && (
-          <div className="edit-modal-wrapper">
-            <div className="edit-modal">
+          <div className="edit-modal-wrapper" onClick={() => this.props.toggleEditModal()}>
+            <div className="edit-modal" onClick={e => e.stopPropagation()}>
               <h1 style={{ color: "#2aabe2", position: 'relative', top: '5%' }}>Select A Time</h1>
               
               <TimePicker

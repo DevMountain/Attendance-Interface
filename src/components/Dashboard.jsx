@@ -28,7 +28,7 @@ export default class Dashboard extends Component {
   render() {
     return (
       <>
-        <Nav render={(editToggle, updateEditButtonDisplay, cohort, date ) => <CohortView editToggle={editToggle} cohort={cohort} date={date} updateEditButtonDisplay={updateEditButtonDisplay}/>} />
+        <Nav render={(toggleEditModal,editToggle, updateEditButtonDisplay, cohort, date ) => <CohortView toggleEditModal={toggleEditModal} editToggle={editToggle} cohort={cohort} date={date} updateEditButtonDisplay={updateEditButtonDisplay}/>} />
       </>
     );
   }
