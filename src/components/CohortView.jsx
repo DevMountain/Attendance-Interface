@@ -14,8 +14,8 @@ class CohortView extends Component {
     cohortData: [],
     sortBy: "time in desc",
     slotsToEdit: [],
-    time_in: "",
-    time_out: "",
+    time_in: moment("9:00 AM", "h:mm a"),
+    time_out: moment("5:00 PM", "h:mm a"),
     comment: "",
     checkAll: false
   };
@@ -43,11 +43,18 @@ class CohortView extends Component {
       });
   };
 
-  handleChange = key => e => {
+  handleTimeChange = key => e => {
+    console.log(e)
+    this.setState({
+      [key]: e
+    });
+  };
+
+  handleCommentChange = (key) => e => {
     this.setState({
       [key]: e.target.value
     });
-  };
+  }
 
   handleSortBy = sortBy => {
     this.setState({ sortBy });
@@ -86,6 +93,7 @@ class CohortView extends Component {
     Promise.all(promiseArr).then(() => {
       this.getCohortData();
     });
+    this.props.toggleEditModal()
   };
   checkAll = () => {
     const { cohortData, checkAll } = this.state;
@@ -102,7 +110,9 @@ class CohortView extends Component {
       this.setState({ checkAll: true, slotsToEdit: newSlotArr });
     }
   };
+
   render() {
+    console.log(this.state)
     const { classes, date } = this.props;
     const {
       cohortData,
@@ -113,7 +123,6 @@ class CohortView extends Component {
       comment,
       checkAll
     } = this.state;
-    console.log(checkAll);
     let sortedCohortData = cohortData.slice();
     if (sortBy === "time in asc") {
       sortedCohortData.sort((a, b) => {
@@ -168,7 +177,6 @@ class CohortView extends Component {
     }
 
     let dayOfWeek = moment(date).format("ddd");
-    console.log(dayOfWeek);
     const cohortDataTable = sortedCohortData.map((student, index) => {
       let firstPing = moment(student.first_ping, "HH:mm:ss").format("h:mm A");
       let lastPing = moment(student.last_ping, "HH:mm:ss").format("h:mm A");
@@ -207,8 +215,8 @@ class CohortView extends Component {
             </td>
             <td className="table-data-name">
               <Link className="student-link" to={`/student/${student.user_id}`}>
-                {student.first_name} {student.last_name}
-                <span />
+               <span>{student.first_name} {student.last_name}</span> 
+               
               </Link>
             </td>
 
@@ -359,25 +367,26 @@ class CohortView extends Component {
           {cohortDataTable}
         </table>
         {this.props.editToggle && (
-          <div className="edit-modal-wrapper">
-            <div className="edit-modal">
+          <div className="edit-modal-wrapper" onClick={() => this.props.toggleEditModal()}>
+            <div className="edit-modal" onClick={e => e.stopPropagation()}>
               <h1 style={{ color: "#2aabe2", position: 'relative', top: '5%' }}>Select A Time</h1>
 
               <TimePicker
                 showSecond={false}
-                defaultValue={moment("9:00 AM", "h:mm a")}
+                onChange={this.handleTimeChange('time_in')}
                 use12Hours
               />
 
               <TimePicker
                 showSecond={false}
-                defaultValue={moment("5:00 PM", "h:mm a")}
+                onChange={this.handleTimeChange('time_out')}
+                value={this.state.time_out}
                 use12Hours
               />
               <textarea
                 className="edit-input"
                 placeholder="Comment"
-                onChange={this.handleChange("comment")}
+                onChange={this.handleCommentChange("comment")}
                 value={this.state.comment}
                 type="text"
               />
