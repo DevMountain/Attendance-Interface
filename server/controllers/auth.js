@@ -17,8 +17,9 @@ module.exports = {
     });
   },
   login: (req, res, next) => {
-    // If no cookie
+    // If no cookie 
     if (!req.cookies.jwtAuth) {
+
       return res.sendStatus(404);
     }
     // If cookie but no session

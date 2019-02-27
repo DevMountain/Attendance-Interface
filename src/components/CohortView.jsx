@@ -23,7 +23,7 @@ class CohortView extends Component {
   componentDidMount() {
     console.log(this.props);
     this.getCohortData();
-  }
+  }//
   componentDidUpdate(prevProps) {
     if (prevProps.cohort !== this.props.cohort) this.getCohortData();
     if (prevProps.date !== this.props.date) this.getCohortData();
@@ -44,17 +44,17 @@ class CohortView extends Component {
   };
 
   handleTimeChange = key => e => {
-    console.log(e)
+    console.log(e);
     this.setState({
       [key]: e
     });
   };
 
-  handleCommentChange = (key) => e => {
+  handleCommentChange = key => e => {
     this.setState({
       [key]: e.target.value
     });
-  }
+  };
 
   handleSortBy = sortBy => {
     this.setState({ sortBy });
@@ -93,7 +93,7 @@ class CohortView extends Component {
     Promise.all(promiseArr).then(() => {
       this.getCohortData();
     });
-    this.props.toggleEditModal()
+    this.props.toggleEditModal();
   };
   checkAll = () => {
     const { cohortData, checkAll } = this.state;
@@ -112,7 +112,7 @@ class CohortView extends Component {
   };
 
   render() {
-    console.log(this.state)
+    console.log(this.state);
     const { classes, date } = this.props;
     const {
       cohortData,
@@ -215,8 +215,9 @@ class CohortView extends Component {
             </td>
             <td className="table-data-name">
               <Link className="student-link" to={`/student/${student.user_id}`}>
-               <span>{student.first_name} {student.last_name}</span> 
-               
+                <span>
+                  {student.first_name} {student.last_name}
+                </span>
               </Link>
             </td>
 
@@ -258,7 +259,7 @@ class CohortView extends Component {
         </>
       );
     });
-//
+    //
     return (
       <>
         <table className="cohort-table">
@@ -367,19 +368,24 @@ class CohortView extends Component {
           {cohortDataTable}
         </table>
         {this.props.editToggle && (
-          <div className="edit-modal-wrapper" onClick={() => this.props.toggleEditModal()}>
+          <div
+            className="edit-modal-wrapper"
+            onClick={() => this.props.toggleEditModal()}
+          >
             <div className="edit-modal" onClick={e => e.stopPropagation()}>
-              <h1 style={{ color: "#2aabe2", position: 'relative', top: '5%' }}>Select A Time</h1>
+              <h1 style={{ color: "#2aabe2", position: "relative", top: "5%" }}>
+                Select A Time
+              </h1>
 
               <TimePicker
                 showSecond={false}
-                onChange={this.handleTimeChange('time_in')}
+                onChange={this.handleTimeChange("time_in")}
                 use12Hours
               />
 
               <TimePicker
                 showSecond={false}
-                onChange={this.handleTimeChange('time_out')}
+                onChange={this.handleTimeChange("time_out")}
                 value={this.state.time_out}
                 use12Hours
               />
@@ -387,10 +393,11 @@ class CohortView extends Component {
                 className="edit-input"
                 placeholder="Comment"
                 onChange={this.handleCommentChange("comment")}
-                value={this.state.comment}
                 type="text"
               />
-              <button className='save-edit' onClick={this.saveEdit}>Save Edit</button>
+              <button className="save-edit" onClick={this.saveEdit}>
+                Save Edit
+              </button>
             </div>
           </div>
         )}
