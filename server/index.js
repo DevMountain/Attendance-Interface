@@ -47,10 +47,10 @@ massive({
 app.get('/api/auth/callback', authCtrl.callback);
 app.get('/api/auth/login', authCtrl.login);
 
-// app.use(authCtrl.isStudent);
+app.use(authCtrl.isStudent);
 // // All endpoints a student can access
 
-// app.use(authCtrl.isStaff);
+app.use(authCtrl.isStaff);
 app.get('/api/getAllCohorts', attCtrl.getAllCohorts)
 app.get('/api/getStudent/:id', attCtrl.getStudent)
 app.post('/api/getCohort', attCtrl.getCohortAttendance)

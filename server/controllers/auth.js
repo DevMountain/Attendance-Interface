@@ -18,6 +18,7 @@ module.exports = {
   },
   login: (req, res, next) => {
     // If no cookie
+    console.log(req.session.user)
     if (!req.cookies.jwtAuth) {
       return res.sendStatus(404);
     }
@@ -30,6 +31,7 @@ module.exports = {
         if (!err) {
           req.session.user = user;
           let { roles }  = req.session.user;
+          console.log('roles::::' , roles)
           roles = roles.map(role => role.role);
           // todo: ask about other potential roles
           // Check if user is just student

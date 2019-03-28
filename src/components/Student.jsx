@@ -28,7 +28,8 @@ class Student extends Component {
       this.setState({
         studentInfo: res.data,
         first_name: res.data[0].first_name,
-        last_name: res.data[0].last_name
+        // last_name: res.data[0].last_name
+        last_name: 'Placeholder'
       });
     });
   };
