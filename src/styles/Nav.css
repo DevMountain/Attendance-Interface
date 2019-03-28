@@ -217,13 +217,14 @@
 
 .cohort-select {
     font-family: 'Nunito', sans-serif;
-
+    /* color: white; */
     margin-left: 1rem;
     /* margin-bottom: 2px */
 }
 
 .location-select {
     font-family: 'Nunito', sans-serif;
+    /* color: white; */
 
 }
 

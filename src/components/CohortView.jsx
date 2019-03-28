@@ -43,7 +43,7 @@ class CohortView extends Component {
       });
   };
 
-  handleTimeChange = key => e => {
+  handleTimeChange =  (e, key) => {
     console.log(e)
     this.setState({
       [key]: e
@@ -84,8 +84,8 @@ class CohortView extends Component {
     for (let i = 0, length = slotsToEdit.length; i < length; i++) {
       let promise = axios.put("/api/edit", {
         attendance_id: slotsToEdit[i],
-        time_in,
-        time_out,
+        time_in: moment(time_in).format("h:mm a"),
+        time_out: moment(time_out).format("h:mm a"),
         comment
       });
       promiseArr.push(promise);
@@ -373,13 +373,14 @@ class CohortView extends Component {
 
               <TimePicker
                 showSecond={false}
-                onChange={this.handleTimeChange('time_in')}
+                onChange={(e) => this.handleTimeChange(e, 'time_in')}
+                value={this.state.time_in}
                 use12Hours
               />
 
               <TimePicker
                 showSecond={false}
-                onChange={this.handleTimeChange('time_out')}
+                onChange={(e) => this.handleTimeChange(e, 'time_out')}
                 value={this.state.time_out}
                 use12Hours
               />

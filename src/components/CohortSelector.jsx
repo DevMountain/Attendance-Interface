@@ -13,7 +13,7 @@ const CohortSelector =(props) => {
         return ( 
             <div className='inner-container-select'>
                 <select className='location-select' value={location} onChange={updateLocation()}>
-                    <option default value=''>All Locations</option>
+                    <option default value=''>Choose a Location</option>
                     <option value='Dallas'>Dallas</option>
                     <option value='Lehi'>Lehi</option>
                     <option value='PHX'>Phoenix</option>

@@ -21,6 +21,9 @@ td {
     border: 1px solid #212121;
     color: white
 }
+th:hover{
+    cursor: pointer;
+}
 
 
 th {

@@ -13,10 +13,10 @@ import "react-infinite-calendar/styles.css";
 class Nav extends Component {
   state = {
     cohorts: [],
-    selectedCohort: "WPR39",
+    selectedCohort: "",
     location: "",
-    selectedDate: "08/30/2018",
-    // selectedDate:moment().format('MM/DD/YYYY'),
+    // selectedDate: "08/30/2018",
+    selectedDate:moment().format('MM/DD/YYYY'),
     dateModal: false,
     editModal: false,
     editButtonToggle: false
@@ -102,7 +102,7 @@ class Nav extends Component {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      width: "400px"
+                      width: "420px"
                     }}
                   >
                     <CohortSelector
@@ -122,7 +122,7 @@ class Nav extends Component {
                     )}
                   </div>
                   <h3>
-                    Carter Childs{" "}
+                    Kenny Crump{" "}
                     <span className="dropdown">
                       <span>
                         <i className="down-arrow fas fa-chevron-down" />
@@ -159,7 +159,7 @@ class Nav extends Component {
                 </div>
 
                 <h3>
-                  Carter Childs{" "}
+                  Kenny Crump{" "}
                   <span className="dropdown">
                     <span>
                       <i className="down-arrow fas fa-chevron-down" />
